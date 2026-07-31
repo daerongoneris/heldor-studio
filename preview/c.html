@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heldor Studio — Variant C</title>
+<meta name="theme-color" content="#151312">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111110'/%3E%3Cpath d='M18 14v36M46 14v36M18 32h28' stroke='%23f2f0ea' stroke-width='7'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme:dark;
+    --bg:#151312; --panel:#1d1a18; --line:rgba(240,230,215,.14);
+    --ink:#f0e9dd; --dim:#a89f90; --accent:#ff6a2e;
+    --serif:"Fraunces",Georgia,serif;
+    --sans:"Inter",-apple-system,system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);line-height:1.55;
+    -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::selection{background:var(--accent);color:#151312}
+  .wrap{max-width:980px;margin:0 auto;padding:0 22px}
+
+  header{position:fixed;top:0;left:0;right:0;z-index:100;height:58px;
+    background:rgba(21,19,18,.8);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)}
+  header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);text-decoration:none}
+  header nav{display:flex;gap:22px}
+  header nav a{font-size:13px;letter-spacing:.04em;color:var(--dim);text-decoration:none}
+  header nav a:hover{color:var(--ink)}
+
+  .hero{padding:140px 0 60px}
+  .kicker{font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);margin-bottom:22px}
+  h1{font-family:var(--serif);font-size:clamp(44px,8.6vw,92px);font-weight:400;
+    letter-spacing:-.01em;line-height:1.06;max-width:17ch}
+  h1 em{font-style:italic;color:var(--accent)}
+  .sub{font-size:clamp(16px,2vw,19px);color:var(--dim);margin-top:24px;max-width:44ch}
+  .cta-row{display:flex;gap:16px;align-items:center;margin-top:36px;flex-wrap:wrap}
+  .btn{font-size:15px;font-weight:500;text-decoration:none;color:#151312;background:var(--ink);
+    padding:14px 26px;border-radius:4px;transition:background .25s}
+  .btn:hover{background:var(--accent)}
+  .tlink{font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:2px}
+  .tlink:hover{color:var(--accent)}
+
+  .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:22px 0;
+    margin-top:70px}
+  .proof .wrap{display:flex;flex-wrap:wrap;gap:10px 34px;justify-content:center}
+  .proof span{font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .proof b{color:var(--accent)}
+
+  section{padding:84px 0}
+  .sec-head{margin-bottom:44px}
+  .sec-head .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent);display:block;margin-bottom:12px}
+  h2{font-family:var(--serif);font-size:clamp(30px,5vw,52px);font-weight:400;letter-spacing:-.01em}
+
+  .offers{display:flex;flex-direction:column}
+  .offer{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1.7fr) auto;gap:18px;
+    align-items:baseline;padding:26px 4px;border-top:1px solid var(--line);
+    text-decoration:none;color:inherit;transition:background .25s,padding .25s}
+  .offer:last-of-type{border-bottom:1px solid var(--line)}
+  .offer:hover{background:var(--panel);padding-left:14px;padding-right:14px}
+  .offer h3{font-family:var(--serif);font-size:clamp(21px,2.8vw,28px);font-weight:600}
+  .offer p{font-size:14.5px;color:var(--dim)}
+  .offer .price{font-size:14px;font-weight:500;white-space:nowrap;text-align:right}
+  .offer .price b{color:var(--accent);display:block;font-size:16px}
+  @media(max-width:700px){
+    .offer{grid-template-columns:1fr;gap:6px}
+    .offer .price{text-align:left}
+  }
+  .note{font-size:13px;color:var(--dim);margin-top:24px;letter-spacing:.02em}
+
+  .method .row{display:grid;grid-template-columns:repeat(4,1fr);gap:30px}
+  @media(max-width:700px){.method .row{grid-template-columns:1fr 1fr;gap:34px 20px}}
+  .m .n{font-family:var(--serif);font-style:italic;font-size:44px;color:var(--accent);
+    display:block;line-height:1;margin-bottom:12px}
+  .m h3{font-size:16px;font-weight:600;letter-spacing:.02em;margin-bottom:4px}
+  .m p{font-size:13.5px;color:var(--dim)}
+
+  .quote{background:var(--panel);border:1px solid var(--line);border-radius:6px;
+    padding:clamp(36px,6vw,60px);text-align:center}
+  .quote p.q{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3.4vw,34px);
+    line-height:1.3;max-width:26ch;margin:0 auto}
+  .quote p.q b{color:var(--accent);font-style:normal;font-weight:600}
+  .quote .sig{margin-top:20px;font-size:13px;letter-spacing:.08em;color:var(--dim)}
+  .quote .sig b{color:var(--ink)}
+
+  .final{padding:100px 0 120px;text-align:center}
+  .final h2{font-size:clamp(38px,7vw,72px)}
+  .final h2 em{font-style:italic;color:var(--accent)}
+  .final p{font-size:16px;color:var(--dim);margin:16px 0 34px}
+  .final p b{color:var(--ink)}
+
+  footer{border-top:1px solid var(--line);padding:24px 0 38px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
+    font-size:12px;letter-spacing:.06em;color:var(--dim)}
+  footer a{color:inherit;text-decoration:none}
+  footer a:hover{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="#">Heldor</a>
+    <nav>
+      <a href="#offers">Offers</a>
+      <a href="#method">Method</a>
+      <a href="mailto:hello@heldor.studio">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <p class="kicker">AI Studio — Fixed Price, Senior-Led</p>
+      <h1>Working AI, shipped <em>absurdly fast.</em></h1>
+      <p class="sub">Not research projects. Systems your business uses on Monday morning.</p>
+      <div class="cta-row">
+        <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799">Book an audit</a>
+        <a class="tlink" href="#offers">See the offers</a>
+      </div>
+    </section>
+  </div>
+
+  <div class="proof">
+    <div class="wrap">
+      <span>Fixed price</span><span>·</span><span>Senior-led</span><span>·</span>
+      <span><b>3</b> founding slots at <b>$799</b></span><span>·</span><span>No hourly billing</span>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section id="offers">
+      <div class="sec-head"><span class="eyebrow">The offers</span><h2>Fixed scope. Fixed price.</h2></div>
+      <div class="offers">
+        <a class="offer" href="mailto:hello@heldor.studio?subject=AI%20Readiness%20Audit">
+          <h3>AI Readiness Audit</h3><p>Every automation opportunity, ranked by ROI.</p>
+          <span class="price"><b>$799 launch</b>then $1,200–1,900</span>
+        </a>
+        <a class="offer" href="mailto:hello@heldor.studio?subject=Automation%20Sprint">
+          <h3>Automation Sprint</h3><p>One workflow automated end-to-end, deployed.</p>
+          <span class="price"><b>$2,500+</b>to $4,500</span>
+        </a>
+        <a class="offer" href="mailto:hello@heldor.studio?subject=Custom%20AI%20Assistant">
+          <h3>Custom AI Assistant</h3><p>Cited answers from your documents, where your team works.</p>
+          <span class="price"><b>$6,000+</b>to $12,000</span>
+        </a>
+        <a class="offer" href="mailto:hello@heldor.studio?subject=Care%20Retainer">
+          <h3>Care Retainer</h3><p>Monitored, tuned, improving every month.</p>
+          <span class="price"><b>$450/mo</b>or $950/mo</span>
+        </a>
+      </div>
+      <p class="note">Founding-client price — first three audit slots only.</p>
+    </section>
+
+    <section class="method" id="method">
+      <div class="sec-head"><span class="eyebrow">The method</span><h2>Four moves.</h2></div>
+      <div class="row">
+        <div class="m"><span class="n">i</span><h3>Map</h3><p>Where the hours go.</p></div>
+        <div class="m"><span class="n">ii</span><h3>Ship</h3><p>Fixed scope, fixed price.</p></div>
+        <div class="m"><span class="n">iii</span><h3>Hand over</h3><p>Working software, documented.</p></div>
+        <div class="m"><span class="n">iv</span><h3>Improve</h3><p>Better every month.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="quote">
+        <p class="q">The person you talk to is the person who <b>ships.</b></p>
+        <p class="sig"><b>OMER B.</b> — FOUNDER · SHIPPED A COMPANY-WIDE AI ASSISTANT FOR AN INTERNATIONAL TRADING GROUP</p>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2>Let's <em>build.</em></h2>
+      <p><b>Three founding audit slots at $799.</b> When they're gone, they're gone.</p>
+      <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799">Book an audit</a>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>HELDOR STUDIO</span>
+    <span><a href="https://heldor.studio">heldor.studio</a> · <a href="mailto:hello@heldor.studio">hello@heldor.studio</a></span>
+  </div>
+</footer>
+</body>
+</html>
