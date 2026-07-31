@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Studio — Heldor Studio</title>
+<meta name="description" content="Senior-led, small, relentless. Every engagement run by a founder who ships.">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111110'/%3E%3Cpath d='M18 14v36M46 14v36M18 32h28' stroke='%23f2f0ea' stroke-width='7'/%3E%3C/svg%3E">
+<style>
+  :root{
+    color-scheme:dark;
+    --bg:#000;
+    --card:#1d1d1f;
+    --ink:#f5f5f7;
+    --dim:#86868b;
+    --accent:#ff4d00;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;line-height:1.5;
+  }
+  ::selection{background:var(--accent);color:#000}
+  .wrap{max-width:980px;margin:0 auto;padding:0 max(22px,env(safe-area-inset-left))}
+
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;height:52px;
+    background:rgba(0,0,0,.72);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-size:15px;font-weight:600;letter-spacing:.01em;color:var(--ink);text-decoration:none}
+  header nav{display:flex;gap:clamp(18px,3.5vw,36px)}
+  header nav a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .25s}
+  header nav a:hover{color:var(--ink)}
+
+  .hero{
+    min-height:60svh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:130px 0 40px;
+  }
+  .kicker{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--accent);margin-bottom:18px}
+  h1{font-size:clamp(38px,7vw,76px);font-weight:700;letter-spacing:-.02em;line-height:1.06;max-width:16ch}
+
+  section{padding:clamp(70px,12vh,120px) 0}
+  .statement{text-align:center}
+  .statement p{
+    font-size:clamp(22px,3.4vw,38px);font-weight:600;letter-spacing:-.015em;
+    line-height:1.3;color:var(--dim);max-width:28ch;margin:0 auto;
+  }
+  .statement p b{color:var(--ink);font-weight:600}
+  .statement p + p{margin-top:1.6em}
+
+  .sig{text-align:center;padding-top:0}
+  .sig .name{font-size:19px;font-weight:600}
+  .sig .role{font-size:14px;color:var(--dim);margin-top:6px;line-height:1.9}
+
+  .vals{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:720px){.vals{grid-template-columns:1fr}}
+  .val{background:var(--card);border-radius:24px;padding:clamp(26px,4vw,38px);text-align:center}
+  .val h3{font-size:20px;font-weight:600;margin-bottom:8px}
+  .val p{font-size:14.5px;color:var(--dim);line-height:1.55}
+
+  .final{text-align:center;padding-bottom:clamp(100px,16vh,150px)}
+  .final h2{font-size:clamp(36px,6vw,64px);font-weight:700;letter-spacing:-.02em}
+  .final .under{font-size:clamp(16px,2vw,19px);color:var(--dim);margin:16px auto 34px;max-width:40ch}
+  .btn{
+    display:inline-block;background:var(--accent);color:#000;text-decoration:none;
+    font-size:16px;font-weight:500;padding:.85em 1.6em;border-radius:999px;
+    transition:transform .25s,opacity .25s;
+  }
+  .btn:hover{opacity:.9;transform:scale(1.02)}
+
+  footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 0 40px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+    font-size:12.5px;color:var(--dim)}
+  footer a{color:inherit;text-decoration:none}
+  footer a:hover{color:var(--ink)}
+
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,0,.2,1),
+    transform .8s cubic-bezier(.2,0,.2,1)}
+  .rv.in{opacity:1;transform:none}
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .rv{opacity:1;transform:none}
+    html{scroll-behavior:auto}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">Heldor Studio</a>
+    <nav>
+      <a href="index.html#offers">Offers</a>
+      <a href="audit.html">Audit</a>
+      <a href="mailto:hello@heldor.studio">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <section class="hero" aria-label="Intro">
+      <p class="kicker">The studio</p>
+      <h1>Senior-led, always.</h1>
+    </section>
+
+    <section class="statement">
+      <p class="rv">Every engagement runs under the direct oversight of a founder who shipped a <b>company-wide AI assistant</b> used daily across an international trading group.</p>
+      <p class="rv">No juniors learning on your dime. No hand-offs. <b>The person you talk to is the person who ships.</b></p>
+    </section>
+
+    <section class="sig">
+      <p class="name rv">Omer B. — Founder</p>
+      <p class="role rv">Deal workflows · Document intelligence · Meeting automation</p>
+    </section>
+
+    <section>
+      <div class="vals">
+        <div class="val rv"><h3>Small</h3><p>Deliberately. Fewer clients, deeper work, faster decisions.</p></div>
+        <div class="val rv"><h3>Fixed price</h3><p>Scope and price agreed before we write a line. No hourly billing.</p></div>
+        <div class="val rv"><h3>Relentless</h3><p>Working results, shipped absurdly fast — not research projects.</p></div>
+      </div>
+    </section>
+
+    <section class="final">
+      <h2 class="rv">Talk to the founder.</h2>
+      <p class="under rv">One email. Tell us which business, and what takes the most time right now.</p>
+      <a class="btn rv" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Get in touch</a>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Heldor Studio</span>
+    <span><a href="https://heldor.studio">heldor.studio</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="mailto:hello@heldor.studio">hello@heldor.studio</a></span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
+})();
+</script>
+</body>
+</html>

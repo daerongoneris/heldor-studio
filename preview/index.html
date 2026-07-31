@@ -5,180 +5,146 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Heldor Studio — AI automation, shipped absurdly fast</title>
 <meta name="description" content="Fixed-price AI systems for businesses that want working results. Senior-led. Small. Relentless.">
-<meta name="theme-color" content="#0f0f0e">
+<meta name="theme-color" content="#000000">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111110'/%3E%3Cpath d='M18 14v36M46 14v36M18 32h28' stroke='%23f2f0ea' stroke-width='7'/%3E%3C/svg%3E">
 <style>
   :root{
     color-scheme:dark;
-    --paper:#0f0f0e; --ink:#e9e6de; --accent:#ff4d00;
-    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
-    --sans:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
+    --bg:#000;
+    --card:#1d1d1f;
+    --ink:#f5f5f7;
+    --dim:#86868b;
+    --accent:#ff4d00;
+    --sans:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    background:var(--paper);color:var(--ink);font-family:var(--sans);
-    -webkit-font-smoothing:antialiased;overflow-x:hidden;
+    background:var(--bg);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+    overflow-x:hidden;line-height:1.5;
   }
-  ::selection{background:var(--accent);color:var(--paper)}
+  ::selection{background:var(--accent);color:#000}
 
-  /* ---------- grain ---------- */
-  body::after{
-    content:"";position:fixed;inset:-50%;z-index:9;pointer-events:none;opacity:.04;filter:invert(1);
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  /* ---------- cursor ---------- */
-  #dot,#ring{position:fixed;top:0;left:0;z-index:10000;pointer-events:none;border-radius:50%;
-    mix-blend-mode:difference;will-change:transform;display:none}
-  #dot{width:8px;height:8px;background:#fff}
-  #ring{width:36px;height:36px;border:1px solid #fff;transition:width .25s,height .25s;}
-  @media (pointer:fine){ #dot,#ring{display:block} }
-  html.hovering #ring{width:64px;height:64px}
-
-  /* ---------- progress ---------- */
-  #bar{position:fixed;top:0;left:0;height:2px;width:100%;background:var(--accent);
-    transform-origin:0 0;transform:scaleX(0);z-index:1000}
-
-  .wrap{max-width:1200px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+  .wrap{max-width:980px;margin:0 auto;padding:0 max(22px,env(safe-area-inset-left))}
 
   /* ---------- header ---------- */
-  header{position:fixed;top:0;left:0;right:0;z-index:100;mix-blend-mode:difference;color:#fff}
-  header .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
-  .brand{font-family:var(--mono);font-size:13px;letter-spacing:.22em;text-decoration:none;color:#fff}
-  header nav a{font-family:var(--mono);font-size:12px;letter-spacing:.14em;color:#fff;
-    text-decoration:none;margin-left:clamp(12px,2.5vw,32px);opacity:.75;transition:opacity .2s}
-  header nav a:hover{opacity:1}
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;height:52px;
+    background:rgba(0,0,0,.72);
+    -webkit-backdrop-filter:saturate(180%) blur(20px);
+    backdrop-filter:saturate(180%) blur(20px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-size:15px;font-weight:600;letter-spacing:.01em;color:var(--ink);text-decoration:none}
+  header nav{display:flex;gap:clamp(18px,3.5vw,36px)}
+  header nav a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .25s}
+  header nav a:hover{color:var(--ink)}
 
   /* ---------- hero ---------- */
-  .hero{min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;
-    padding-bottom:clamp(28px,6vh,72px);position:relative}
-  .hero-kicker{font-family:var(--mono);font-size:clamp(11px,1.2vw,13px);letter-spacing:.3em;
-    color:var(--accent);margin-bottom:2.2em}
-  h1{font-size:clamp(64px,14.5vw,220px);line-height:.86;letter-spacing:-.045em;
-    font-weight:700;text-transform:uppercase}
-  h1 .word{display:block;overflow:hidden}
-  h1 .word>span{display:block;will-change:transform}
-  .hero-sub{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
-    gap:24px;margin-top:clamp(28px,5vh,56px)}
-  .hero-sub p{max-width:34ch;font-size:clamp(16px,1.6vw,20px);line-height:1.45}
-  .hero-sub p em{font-style:normal;border-bottom:2px solid var(--accent)}
-
-  .cta{display:inline-block;font-family:var(--mono);font-size:13px;letter-spacing:.12em;
-    text-decoration:none;color:var(--paper);background:var(--ink);padding:1.15em 1.9em;
-    border-radius:999px;position:relative;overflow:hidden;transition:color .3s}
-  .cta span{position:relative;z-index:1}
-  .cta::before{content:"";position:absolute;inset:0;background:var(--accent);
-    transform:translateY(101%);transition:transform .35s cubic-bezier(.65,0,.35,1)}
-  .cta:hover::before{transform:translateY(0)}
-  .cta:hover{color:var(--paper)}
-
-  .scroll-hint{position:absolute;right:clamp(20px,4vw,56px);bottom:clamp(28px,6vh,72px);
-    font-family:var(--mono);font-size:11px;letter-spacing:.3em;writing-mode:vertical-rl;
-    opacity:.45;animation:hint 2.2s ease-in-out infinite}
-  @keyframes hint{50%{transform:translateY(10px)}}
-  @media(max-width:900px){.scroll-hint{display:none}}
-
-  /* ---------- marquee ---------- */
-  .marquee{border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);
-    overflow:hidden;white-space:nowrap;padding:14px 0;user-select:none}
-  .marquee-track{display:inline-block;animation:mq 28s linear infinite}
-  .marquee span{font-family:var(--mono);font-size:13px;letter-spacing:.28em;margin:0 1.4em}
-  .marquee .x{color:var(--accent)}
-  @keyframes mq{to{transform:translateX(-50%)}}
+  .hero{
+    min-height:92svh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:120px 0 60px;
+  }
+  .kicker{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--accent);margin-bottom:18px}
+  h1{
+    font-size:clamp(42px,8vw,88px);font-weight:700;letter-spacing:-.02em;
+    line-height:1.04;max-width:15ch;
+  }
+  .hero .sub{
+    font-size:clamp(18px,2.4vw,26px);color:var(--dim);font-weight:400;
+    max-width:34ch;margin-top:26px;line-height:1.4;
+  }
+  .hero .sub b{color:var(--ink);font-weight:500}
+  .cta-row{display:flex;gap:26px;align-items:center;margin-top:40px;flex-wrap:wrap;justify-content:center}
+  .btn{
+    display:inline-block;background:var(--accent);color:#000;text-decoration:none;
+    font-size:16px;font-weight:500;padding:.85em 1.6em;border-radius:999px;
+    transition:transform .25s,opacity .25s;
+  }
+  .btn:hover{opacity:.9;transform:scale(1.02)}
+  .tlink{font-size:16px;color:var(--accent);text-decoration:none}
+  .tlink:hover{text-decoration:underline}
+  .tlink::after{content:" ›"}
 
   /* ---------- sections ---------- */
-  section{padding:clamp(80px,14vh,160px) 0}
-  .sec-head{display:flex;align-items:baseline;gap:1.2em;margin-bottom:clamp(40px,7vh,80px)}
-  .sec-num{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--accent)}
-  h2{font-size:clamp(34px,5.5vw,72px);letter-spacing:-.03em;line-height:1.02;font-weight:700}
+  section{padding:clamp(90px,16vh,150px) 0}
+  .sec-head{text-align:center;margin-bottom:clamp(48px,8vh,76px)}
+  h2{font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:-.02em;line-height:1.08}
+  .sec-head p{font-size:clamp(16px,2vw,21px);color:var(--dim);margin:16px auto 0;max-width:44ch}
 
   /* offers */
-  .offer{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.6fr) auto;gap:20px;
-    align-items:baseline;padding:clamp(22px,3.5vh,34px) clamp(12px,1.5vw,24px);
-    border-top:1px solid var(--ink);text-decoration:none;color:inherit;
-    position:relative;overflow:hidden;transition:color .3s}
-  .offer:last-of-type{border-bottom:1px solid var(--ink)}
-  .offer::before{content:"";position:absolute;inset:0;background:var(--ink);
-    transform:scaleY(0);transform-origin:top;transition:transform .35s cubic-bezier(.65,0,.35,1);z-index:-1}
-  .offer:hover::before{transform:scaleY(1)}
-  .offer:hover{color:var(--paper)}
-  .offer h3{font-size:clamp(20px,2.6vw,32px);letter-spacing:-.02em;font-weight:700}
-  .offer .desc{font-size:clamp(14px,1.4vw,16px);line-height:1.5;opacity:.85;max-width:52ch}
-  .offer .price{font-family:var(--mono);font-size:clamp(13px,1.4vw,15px);letter-spacing:.05em;
-    white-space:nowrap;text-align:right}
-  .offer .price b{display:block;color:var(--accent);font-weight:700}
-  .offer .go{position:absolute;right:clamp(12px,1.5vw,24px);bottom:12px;font-family:var(--mono);
-    font-size:11px;letter-spacing:.18em;opacity:0;transform:translateX(-12px);
-    transition:opacity .3s .05s,transform .3s .05s}
-  .offer:hover .go{opacity:1;transform:none}
-  @media(max-width:760px){
-    .offer{grid-template-columns:1fr;gap:8px}
-    .offer .price{text-align:left}
-    .offer .go{display:none}
+  .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:720px){.cards{grid-template-columns:1fr}}
+  .card{
+    background:var(--card);border-radius:24px;padding:clamp(28px,4vw,42px);
+    display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;
+    transition:transform .35s cubic-bezier(.2,0,.2,1);
   }
-  .note{font-family:var(--mono);font-size:12px;letter-spacing:.08em;line-height:1.7;
-    opacity:.6;margin-top:28px;max-width:60ch}
+  .card:hover{transform:translateY(-4px)}
+  .card h3{font-size:clamp(21px,2.6vw,27px);font-weight:600;letter-spacing:-.01em}
+  .card .desc{font-size:15.5px;color:var(--dim);line-height:1.55;flex:1}
+  .card .price{font-size:15px;font-weight:500}
+  .card .price b{color:var(--accent);font-weight:600}
+  .card .go{font-size:15px;color:var(--accent)}
+  .card .go::after{content:" ›"}
+  .note{
+    text-align:center;font-size:13.5px;color:var(--dim);margin-top:34px;
+    letter-spacing:.01em;
+  }
 
   /* method */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,44px)}
-  .step .k{font-family:var(--mono);font-size:12px;letter-spacing:.2em;color:var(--accent);
-    display:block;margin-bottom:1.1em}
-  .step h3{font-size:clamp(18px,2vw,24px);margin-bottom:.55em;letter-spacing:-.01em}
-  .step p{font-size:14.5px;line-height:1.55;opacity:.8;max-width:26ch}
-  .step{border-top:1px solid var(--ink);padding-top:1.4em}
-  @media(max-width:860px){.steps{grid-template-columns:repeat(2,1fr)}}
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3.5vw,44px);text-align:center}
+  @media(max-width:860px){.steps{grid-template-columns:1fr 1fr;gap:40px 24px}}
   @media(max-width:480px){.steps{grid-template-columns:1fr}}
+  .step .k{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--accent);display:block;margin-bottom:12px}
+  .step h3{font-size:20px;font-weight:600;margin-bottom:8px}
+  .step p{font-size:14.5px;color:var(--dim);line-height:1.55;max-width:24ch;margin:0 auto}
 
   /* studio */
-  .studio p.lead{font-size:clamp(19px,2.6vw,30px);line-height:1.35;letter-spacing:-.015em;
-    max-width:30ch}
-  .studio .sig{margin-top:2.2em;font-family:var(--mono);font-size:13px;letter-spacing:.1em;
-    line-height:2;opacity:.75}
-  .studio .sig b{color:var(--accent);font-weight:700}
+  .studio{text-align:center}
+  .studio .lead{
+    font-size:clamp(24px,3.6vw,40px);font-weight:600;letter-spacing:-.015em;
+    line-height:1.25;color:var(--dim);max-width:26ch;margin:0 auto;
+  }
+  .studio .lead b{color:var(--ink);font-weight:600}
+  .studio .sig{margin-top:34px;font-size:14px;color:var(--dim);line-height:1.9}
+  .studio .sig b{color:var(--ink);font-weight:600}
 
-  /* final cta */
-  .final{padding:clamp(100px,18vh,200px) 0;text-align:left}
-  .final a.big{display:block;text-decoration:none;color:inherit;
-    font-size:clamp(48px,11vw,160px);font-weight:700;text-transform:uppercase;
-    letter-spacing:-.04em;line-height:.92;transition:letter-spacing .45s cubic-bezier(.3,0,.2,1)}
-  .final a.big:hover{letter-spacing:.01em;color:var(--accent)}
-  .final a.big .arrow{display:inline-block;transition:transform .45s cubic-bezier(.3,0,.2,1)}
-  .final a.big:hover .arrow{transform:translateX(.18em) rotate(-45deg)}
-  .final .under{font-family:var(--mono);font-size:13px;letter-spacing:.1em;opacity:.65;
-    margin-top:2.4em;line-height:1.9}
-  .final .under b{color:var(--accent)}
+  /* final */
+  .final{text-align:center;padding-bottom:clamp(110px,18vh,170px)}
+  .final h2{font-size:clamp(40px,7vw,76px)}
+  .final .under{font-size:clamp(16px,2vw,20px);color:var(--dim);margin:18px auto 36px;max-width:38ch}
+  .final .under b{color:var(--ink);font-weight:500}
 
-  footer{border-top:1px solid var(--ink);padding:26px 0 34px}
-  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;
-    font-family:var(--mono);font-size:12px;letter-spacing:.12em;opacity:.75}
-  footer a{color:inherit;text-decoration:none;border-bottom:1px solid transparent}
-  footer a:hover{border-color:var(--accent)}
+  footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 0 40px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+    font-size:12.5px;color:var(--dim)}
+  footer a{color:inherit;text-decoration:none}
+  footer a:hover{color:var(--ink)}
 
   /* reveal */
-  .rv{opacity:0;transform:translateY(34px);transition:opacity .8s cubic-bezier(.2,0,.2,1),
+  .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,0,.2,1),
     transform .8s cubic-bezier(.2,0,.2,1)}
   .rv.in{opacity:1;transform:none}
 
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .rv{opacity:1;transform:none}
-    h1 .word>span{transform:none!important}
-    #dot,#ring{display:none!important}
     html{scroll-behavior:auto}
   }
 </style>
 </head>
 <body>
-<div id="bar"></div>
-<div id="ring"></div><div id="dot"></div>
 
 <header>
   <div class="wrap">
-    <a class="brand" href="#top">HELDOR&nbsp;STUDIO</a>
+    <a class="brand" href="#top">Heldor Studio</a>
     <nav>
       <a href="#offers">Offers</a>
-      <a href="#method">Method</a>
+      <a href="audit.html">Audit</a>
+      <a href="about.html">Studio</a>
       <a href="mailto:hello@heldor.studio">Contact</a>
     </nav>
   </div>
@@ -186,161 +152,92 @@
 
 <main id="top">
   <div class="wrap">
+
     <section class="hero" aria-label="Intro">
-      <p class="hero-kicker">AI SYSTEMS · FIXED PRICE · SENIOR-LED</p>
-      <h1 id="hero-title" aria-label="Heldor Studio">
-        <span class="word"><span>HELDOR</span></span>
-        <span class="word"><span>STUDIO</span></span>
-      </h1>
-      <div class="hero-sub">
-        <p>AI automation, <em>shipped absurdly fast</em>. Working results for your business — not research projects.</p>
-        <a class="cta" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A"><span>BOOK AN AI READINESS AUDIT&nbsp;&nbsp;→</span></a>
+      <p class="kicker">AI systems · Fixed price · Senior-led</p>
+      <h1>AI automation, shipped absurdly fast.</h1>
+      <p class="sub">Working results for your business — <b>not research projects.</b></p>
+      <div class="cta-row">
+        <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book an AI readiness audit</a>
+        <a class="tlink" href="#offers">See offers</a>
       </div>
-      <span class="scroll-hint">SCROLL</span>
     </section>
-  </div>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="marquee-track" id="mq"></div>
-  </div>
-
-  <div class="wrap">
     <section id="offers">
-      <div class="sec-head rv"><span class="sec-num">01</span>
-        <h2>Fixed scope. Fixed price.<br>Real outcomes.</h2></div>
-
-      <a class="offer rv" href="mailto:hello@heldor.studio?subject=AI%20Readiness%20Audit">
-        <h3>AI Readiness Audit</h3>
-        <p class="desc">Your operation mapped, every automation opportunity ranked by ROI, and a build-ready roadmap. If it wasn't worth it, you don't pay.</p>
-        <p class="price"><b>LAUNCH $799</b>then $1,200–1,900</p>
-        <span class="go">START HERE →</span>
-      </a>
-      <a class="offer rv" href="mailto:hello@heldor.studio?subject=Automation%20Sprint">
-        <h3>Automation Sprint</h3>
-        <p class="desc">One workflow automated end-to-end — acceptance criteria agreed before we write a line, deployed and documented.</p>
-        <p class="price">$2,500–4,500</p>
-        <span class="go">ENQUIRE →</span>
-      </a>
-      <a class="offer rv" href="mailto:hello@heldor.studio?subject=Custom%20AI%20Assistant">
-        <h3>Custom AI Assistant</h3>
-        <p class="desc">Grounded on your documents and systems — cited answers in Slack, Teams, Telegram, or the web. Where your team already works.</p>
-        <p class="price">$6,000–12,000</p>
-        <span class="go">ENQUIRE →</span>
-      </a>
-      <a class="offer rv" href="mailto:hello@heldor.studio?subject=Care%20Retainer">
-        <h3>Care Retainer</h3>
-        <p class="desc">Proactive monitoring, monthly improvements, priority response. Your systems never go stale.</p>
-        <p class="price">$450 / $950 mo</p>
-        <span class="go">ENQUIRE →</span>
-      </a>
-
-      <p class="note rv">FOUNDING-CLIENT PRICE — FIRST THREE AUDIT SLOTS ONLY. NO HOURLY BILLING, NO SCOPE CREEP.</p>
+      <div class="sec-head rv">
+        <h2>Fixed scope. Fixed price.<br>Real outcomes.</h2>
+      </div>
+      <div class="cards">
+        <a class="card rv" href="audit.html">
+          <h3>AI Readiness Audit</h3>
+          <p class="desc">Your operation mapped, every automation opportunity ranked by ROI, and a build-ready roadmap. If it wasn't worth it, you don't pay.</p>
+          <p class="price"><b>Launch $799</b> · then $1,200–1,900</p>
+          <span class="go">Start here</span>
+        </a>
+        <a class="card rv" href="mailto:hello@heldor.studio?subject=Automation%20Sprint">
+          <h3>Automation Sprint</h3>
+          <p class="desc">One workflow automated end-to-end — acceptance criteria agreed before we write a line, deployed and documented.</p>
+          <p class="price">$2,500–4,500</p>
+          <span class="go">Enquire</span>
+        </a>
+        <a class="card rv" href="mailto:hello@heldor.studio?subject=Custom%20AI%20Assistant">
+          <h3>Custom AI Assistant</h3>
+          <p class="desc">Grounded on your documents and systems — cited answers in Slack, Teams, Telegram, or the web. Where your team already works.</p>
+          <p class="price">$6,000–12,000</p>
+          <span class="go">Enquire</span>
+        </a>
+        <a class="card rv" href="mailto:hello@heldor.studio?subject=Care%20Retainer">
+          <h3>Care Retainer</h3>
+          <p class="desc">Proactive monitoring, monthly improvements, priority response. Your systems never go stale.</p>
+          <p class="price">$450 / $950 per month</p>
+          <span class="go">Enquire</span>
+        </a>
+      </div>
+      <p class="note rv">Founding-client price — first three audit slots only. No hourly billing, no scope creep.</p>
     </section>
 
     <section id="method">
-      <div class="sec-head rv"><span class="sec-num">02</span><h2>How it works</h2></div>
+      <div class="sec-head rv">
+        <h2>How it works</h2>
+      </div>
       <div class="steps">
-        <div class="step rv"><span class="k">A — AUDIT</span><h3>Map</h3><p>Workflows mapped, opportunities ranked by ROI.</p></div>
-        <div class="step rv"><span class="k">B — BUILD</span><h3>Ship</h3><p>Fixed scope and price, acceptance criteria up front.</p></div>
-        <div class="step rv"><span class="k">C — DELIVER</span><h3>Hand over</h3><p>Working software, a walkthrough, a fixed revision window.</p></div>
-        <div class="step rv"><span class="k">D — CARE</span><h3>Improve</h3><p>Monitored, tuned, and improving every month.</p></div>
+        <div class="step rv"><span class="k">01 · Audit</span><h3>Map</h3><p>Workflows mapped, opportunities ranked by ROI.</p></div>
+        <div class="step rv"><span class="k">02 · Build</span><h3>Ship</h3><p>Fixed scope and price, acceptance criteria up front.</p></div>
+        <div class="step rv"><span class="k">03 · Deliver</span><h3>Hand over</h3><p>Working software, a walkthrough, a fixed revision window.</p></div>
+        <div class="step rv"><span class="k">04 · Care</span><h3>Improve</h3><p>Monitored, tuned, and improving every month.</p></div>
       </div>
     </section>
 
     <section class="studio" id="studio">
-      <div class="sec-head rv"><span class="sec-num">03</span><h2>Senior-led, always</h2></div>
-      <p class="lead rv">Every engagement runs under the direct oversight of a founder who shipped a company-wide AI assistant used daily across an international trading group.</p>
-      <p class="sig rv"><b>OMER B.</b> — FOUNDER<br>DEAL WORKFLOWS · DOCUMENT INTELLIGENCE · MEETING AUTOMATION</p>
+      <p class="lead rv">Every engagement is <b>senior-led</b> — run by a founder who shipped a <b>company-wide AI assistant</b> used daily across an international trading group.</p>
+      <p class="sig rv"><b>Omer B.</b> — Founder<br>Deal workflows · Document intelligence · Meeting automation</p>
     </section>
 
     <section class="final" id="audit">
-      <a class="big rv" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">
-        Let's build<span class="arrow">&nbsp;→</span>
-      </a>
-      <p class="under rv">KNOW EXACTLY WHAT AI CAN DO FOR YOUR BUSINESS.<br>
-        <b>THREE FOUNDING AUDIT SLOTS AT $799.</b> WHEN THEY'RE GONE, THEY'RE GONE.</p>
+      <h2 class="rv">Let's build.</h2>
+      <p class="under rv">Know exactly what AI can do for your business.<br>
+        <b>Three founding audit slots at $799.</b> When they're gone, they're gone.</p>
+      <a class="btn rv" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book an AI readiness audit</a>
     </section>
+
   </div>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>HELDOR STUDIO</span>
+    <span>Heldor Studio</span>
     <span><a href="https://heldor.studio">heldor.studio</a>&nbsp;&nbsp;·&nbsp;&nbsp;<a href="mailto:hello@heldor.studio">hello@heldor.studio</a></span>
   </div>
 </footer>
 
 <script>
 (function(){
-  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* marquee content (duplicated once for a seamless -50% loop) */
-  var items = 'AI AUTOMATION|SHIPPED ABSURDLY FAST|FIXED SCOPE|FIXED PRICE|SENIOR-LED';
-  var chunk = items.split('|').map(function(t){
-    return '<span>'+t+'</span><span class="x">✦</span>';
-  }).join('');
-  document.getElementById('mq').innerHTML = chunk + chunk;
-
-  /* hero reveal */
-  var spans = document.querySelectorAll('#hero-title .word>span');
-  if(!reduced){
-    spans.forEach(function(s,i){
-      s.style.transform='translateY(110%)';
-      s.style.transition='transform 1s cubic-bezier(.16,1,.3,1) '+(0.15+i*0.12)+'s';
-    });
-    requestAnimationFrame(function(){requestAnimationFrame(function(){
-      spans.forEach(function(s){s.style.transform='translateY(0)';});
-    });});
-  }
-
-  /* scroll reveals */
   var io = new IntersectionObserver(function(es){
-    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+    es.forEach(function(e){
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
   },{threshold:0.12,rootMargin:'0px 0px -8% 0px'});
-  document.querySelectorAll('.rv').forEach(function(el){io.observe(el);});
-
-  /* progress bar */
-  var bar = document.getElementById('bar');
-  var ticking=false;
-  addEventListener('scroll',function(){
-    if(ticking) return; ticking=true;
-    requestAnimationFrame(function(){
-      var h=document.documentElement;
-      var p=h.scrollTop/(h.scrollHeight-h.clientHeight||1);
-      bar.style.transform='scaleX('+p+')'; ticking=false;
-    });
-  },{passive:true});
-
-  /* cursor (fine pointers only) */
-  if(matchMedia('(pointer:fine)').matches && !reduced){
-    var dot=document.getElementById('dot'), ring=document.getElementById('ring');
-    var x=innerWidth/2,y=innerHeight/2,rx=x,ry=y;
-    addEventListener('mousemove',function(e){x=e.clientX;y=e.clientY;},{passive:true});
-    (function loop(){
-      rx+=(x-rx)*0.16; ry+=(y-ry)*0.16;
-      dot.style.transform='translate('+(x-4)+'px,'+(y-4)+'px)';
-      var r=ring.offsetWidth/2;
-      ring.style.transform='translate('+(rx-r)+'px,'+(ry-r)+'px)';
-      requestAnimationFrame(loop);
-    })();
-    document.querySelectorAll('a').forEach(function(a){
-      a.addEventListener('mouseenter',function(){document.documentElement.classList.add('hovering');});
-      a.addEventListener('mouseleave',function(){document.documentElement.classList.remove('hovering');});
-    });
-  }
-
-  /* hero micro-parallax */
-  if(matchMedia('(pointer:fine)').matches && !reduced){
-    var t=document.getElementById('hero-title'), px=0,py=0,cx=0,cy=0;
-    addEventListener('mousemove',function(e){
-      px=(e.clientX/innerWidth-.5); py=(e.clientY/innerHeight-.5);
-    },{passive:true});
-    (function pl(){
-      cx+=(px-cx)*0.06; cy+=(py-cy)*0.06;
-      t.style.transform='translate('+(cx*14)+'px,'+(cy*10)+'px)';
-      requestAnimationFrame(pl);
-    })();
-  }
+  document.querySelectorAll('.rv').forEach(function(el){ io.observe(el); });
 })();
 </script>
 </body>
