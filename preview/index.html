@@ -5,10 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Heldor Studio — AI automation, shipped absurdly fast</title>
 <meta name="description" content="Fixed-price AI systems for businesses that want working results. Senior-led. Small. Relentless.">
+<meta name="theme-color" content="#0f0f0e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23111110'/%3E%3Cpath d='M18 14v36M46 14v36M18 32h28' stroke='%23f2f0ea' stroke-width='7'/%3E%3C/svg%3E">
 <style>
   :root{
-    --paper:#f2f0ea; --ink:#111110; --accent:#ff4d00;
+    color-scheme:dark;
+    --paper:#0f0f0e; --ink:#e9e6de; --accent:#ff4d00;
     --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
     --sans:"Helvetica Neue",Helvetica,Arial,system-ui,sans-serif;
   }
@@ -22,7 +24,7 @@
 
   /* ---------- grain ---------- */
   body::after{
-    content:"";position:fixed;inset:-50%;z-index:9;pointer-events:none;opacity:.05;
+    content:"";position:fixed;inset:-50%;z-index:9;pointer-events:none;opacity:.04;filter:invert(1);
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
