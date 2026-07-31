@@ -70,13 +70,12 @@
   .scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;
     font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,235,222,.55)}
 
-  /* ————— marquee ————— */
-  .marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    overflow:hidden;white-space:nowrap;padding:16px 0;background:var(--bg2)}
-  .marquee .track{display:inline-block;animation:slide 26s linear infinite}
-  .marquee span{font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim);padding:0 18px}
-  .marquee b{color:var(--amber);font-weight:600}
-  @keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+  /* ————— proof strip ————— */
+  .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:17px 0;background:var(--bg2)}
+  .proof .wrap{display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:center}
+  .proof span{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
+  .proof b{color:var(--amber);font-weight:600}
 
   section{padding:96px 0}
   .sec-head{margin-bottom:48px}
@@ -128,9 +127,6 @@
 
   /* ————— final ————— */
   .final{position:relative;padding:130px 0 150px;text-align:center;overflow:hidden}
-  .final .orb{position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
-    width:min(46vw,340px);aspect-ratio:1;border-radius:50%;pointer-events:none;
-    background:radial-gradient(circle at 50% 38%,rgba(255,140,60,.22),rgba(255,92,28,.07) 55%,transparent 72%)}
   .final h2{font-size:clamp(44px,8.5vw,86px);position:relative}
   .final h2 em{font-style:italic;font-weight:400;
     background:linear-gradient(100deg,var(--accent),var(--amber));
@@ -150,8 +146,7 @@
     color:transparent;-webkit-text-stroke:1px rgba(242,235,222,.22)}
 
   @media (prefers-reduced-motion:reduce){
-    .dawn{animation:none}
-    .marquee .track{animation:none}
+    .dawn-svg{animation:none}
   }
 </style>
 </head>
@@ -207,12 +202,10 @@
     <span class="scroll-hint">Scroll</span>
   </section>
 
-  <div class="marquee" aria-hidden="true">
-    <div class="track">
-      <span>Fixed price</span><span>—</span><span>Senior-led</span><span>—</span>
-      <span><b>3 founding slots · $799</b></span><span>—</span><span>No hourly billing</span><span>—</span>
-      <span>Fixed price</span><span>—</span><span>Senior-led</span><span>—</span>
-      <span><b>3 founding slots · $799</b></span><span>—</span><span>No hourly billing</span><span>—</span>
+  <div class="proof">
+    <div class="wrap">
+      <span>Fixed price</span><span>Senior-led</span>
+      <span><b>3 founding slots · $799</b></span><span>No hourly billing</span>
     </div>
   </div>
 
@@ -275,7 +268,6 @@
     </section>
 
     <section class="final">
-      <div class="orb" aria-hidden="true"></div>
       <h2>Let's <em>build.</em></h2>
       <p><b>Three founding audit slots at $799.</b> When they're gone, they're gone.</p>
       <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799">Book an audit</a>
