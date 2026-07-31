@@ -41,11 +41,18 @@
   header nav a:hover{color:var(--ink)}
 
   .hero{
-    min-height:70svh;display:flex;flex-direction:column;align-items:center;
+    position:relative;min-height:70svh;display:flex;flex-direction:column;align-items:center;
     justify-content:center;text-align:center;padding:130px 0 40px;
   }
+  .glow{
+    position:absolute;left:50%;top:0;transform:translateX(-50%);
+    width:min(1000px,140vw);aspect-ratio:1;pointer-events:none;z-index:-1;
+    background:radial-gradient(closest-side,rgba(255,77,0,.28),rgba(255,77,0,.06) 48%,transparent 72%);
+  }
   .kicker{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--accent);margin-bottom:18px}
-  h1{font-size:clamp(38px,7vw,76px);font-weight:700;letter-spacing:-.02em;line-height:1.06;max-width:18ch}
+  h1{font-size:clamp(38px,7vw,76px);font-weight:700;letter-spacing:-.02em;line-height:1.06;max-width:18ch;
+    background:linear-gradient(180deg,#fff 35%,#ffd9c4 62%,#ff7a33);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
   .hero .sub{font-size:clamp(18px,2.3vw,24px);color:var(--dim);max-width:36ch;margin-top:24px;line-height:1.4}
   .hero .sub b{color:var(--ink);font-weight:500}
   .cta-row{display:flex;gap:26px;align-items:center;margin-top:38px;flex-wrap:wrap;justify-content:center}
@@ -123,9 +130,10 @@
   <div class="wrap">
 
     <section class="hero" aria-label="Intro">
+      <div class="glow" aria-hidden="true"></div>
       <p class="kicker">AI Readiness Audit</p>
-      <h1>Know exactly what AI can do for your business.</h1>
-      <p class="sub">Before you spend a dollar on building, know <b>what's worth building.</b></p>
+      <h1>Know what AI can do for you.</h1>
+      <p class="sub">Before you spend on building, know <b>what's worth building.</b></p>
       <div class="cta-row">
         <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book the audit</a>
       </div>
@@ -138,19 +146,19 @@
       <div class="cards">
         <div class="card rv">
           <h3>Your operation, mapped</h3>
-          <p>We sit with your workflows — the deals, the documents, the follow-ups — and map where the hours actually go.</p>
+          <p>Where the hours actually go.</p>
         </div>
         <div class="card rv">
-          <h3>Opportunities ranked by ROI</h3>
-          <p>Every automation opportunity scored for impact and effort, so the highest-return work rises to the top.</p>
+          <h3>Ranked by ROI</h3>
+          <p>The highest-return work rises to the top.</p>
         </div>
         <div class="card rv">
           <h3>A build-ready roadmap</h3>
-          <p>Not a slide deck of ideas — a concrete plan you could hand to any builder. Including us.</p>
+          <p>Not a slide deck — a plan you could hand to any builder.</p>
         </div>
         <div class="card rv">
           <h3>Straight answers</h3>
-          <p>If AI isn't worth it for a workflow, the roadmap says so. You'll know what not to build, too.</p>
+          <p>You'll know what not to build, too.</p>
         </div>
       </div>
     </section>
@@ -160,9 +168,9 @@
         <h2>How it runs</h2>
       </div>
       <div class="steps">
-        <div class="step rv"><span class="k">01</span><h3>Kickoff</h3><p>A working session on your business and where the time goes.</p></div>
-        <div class="step rv"><span class="k">02</span><h3>Deep dive</h3><p>We dig into the workflows, documents, and systems that matter.</p></div>
-        <div class="step rv"><span class="k">03</span><h3>Readout</h3><p>The map, the ranked opportunities, and the roadmap — walked through together.</p></div>
+        <div class="step rv"><span class="k">01</span><h3>Kickoff</h3><p>A working session on where the time goes.</p></div>
+        <div class="step rv"><span class="k">02</span><h3>Deep dive</h3><p>The workflows and systems that matter.</p></div>
+        <div class="step rv"><span class="k">03</span><h3>Readout</h3><p>Map, ranked opportunities, roadmap.</p></div>
       </div>
     </section>
 

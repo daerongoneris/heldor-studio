@@ -41,11 +41,18 @@
   header nav a:hover{color:var(--ink)}
 
   .hero{
-    min-height:60svh;display:flex;flex-direction:column;align-items:center;
+    position:relative;min-height:60svh;display:flex;flex-direction:column;align-items:center;
     justify-content:center;text-align:center;padding:130px 0 40px;
   }
+  .glow{
+    position:absolute;left:50%;top:0;transform:translateX(-50%);
+    width:min(1000px,140vw);aspect-ratio:1;pointer-events:none;z-index:-1;
+    background:radial-gradient(closest-side,rgba(255,77,0,.28),rgba(255,77,0,.06) 48%,transparent 72%);
+  }
   .kicker{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--accent);margin-bottom:18px}
-  h1{font-size:clamp(38px,7vw,76px);font-weight:700;letter-spacing:-.02em;line-height:1.06;max-width:16ch}
+  h1{font-size:clamp(38px,7vw,76px);font-weight:700;letter-spacing:-.02em;line-height:1.06;max-width:16ch;
+    background:linear-gradient(180deg,#fff 35%,#ffd9c4 62%,#ff7a33);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
 
   section{padding:clamp(70px,12vh,120px) 0}
   .statement{text-align:center}
@@ -109,18 +116,18 @@
   <div class="wrap">
 
     <section class="hero" aria-label="Intro">
+      <div class="glow" aria-hidden="true"></div>
       <p class="kicker">The studio</p>
       <h1>Senior-led, always.</h1>
     </section>
 
     <section class="statement">
-      <p class="rv">Every engagement runs under the direct oversight of a founder who shipped a <b>company-wide AI assistant</b> used daily across an international trading group.</p>
-      <p class="rv">No juniors learning on your dime. No hand-offs. <b>The person you talk to is the person who ships.</b></p>
+      <p class="rv">No juniors. No hand-offs. <b>The person you talk to is the person who ships.</b></p>
     </section>
 
     <section class="sig">
       <p class="name rv">Omer B. — Founder</p>
-      <p class="role rv">Deal workflows · Document intelligence · Meeting automation</p>
+      <p class="role rv">Shipped a company-wide AI assistant for an international trading group.<br>Deal workflows · Document intelligence · Meeting automation</p>
     </section>
 
     <section>

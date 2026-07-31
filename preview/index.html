@@ -11,7 +11,7 @@
   :root{
     color-scheme:dark;
     --bg:#000;
-    --card:#1d1d1f;
+    --card:#151516;
     --ink:#f5f5f7;
     --dim:#86868b;
     --accent:#ff4d00;
@@ -25,8 +25,7 @@
     overflow-x:hidden;line-height:1.5;
   }
   ::selection{background:var(--accent);color:#000}
-
-  .wrap{max-width:980px;margin:0 auto;padding:0 max(22px,env(safe-area-inset-left))}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 max(22px,env(safe-area-inset-left))}
 
   /* ---------- header ---------- */
   header{
@@ -37,85 +36,129 @@
     border-bottom:1px solid rgba(255,255,255,.08);
   }
   header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
-  .brand{font-size:15px;font-weight:600;letter-spacing:.01em;color:var(--ink);text-decoration:none}
-  header nav{display:flex;gap:clamp(18px,3.5vw,36px)}
+  .brand{font-size:15px;font-weight:600;color:var(--ink);text-decoration:none}
+  header nav{display:flex;gap:clamp(16px,3vw,34px)}
   header nav a{font-size:13px;color:var(--dim);text-decoration:none;transition:color .25s}
   header nav a:hover{color:var(--ink)}
 
   /* ---------- hero ---------- */
   .hero{
-    min-height:92svh;display:flex;flex-direction:column;align-items:center;
-    justify-content:center;text-align:center;padding:120px 0 60px;
+    position:relative;min-height:96svh;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;text-align:center;
+    padding:110px 0 40px;overflow:visible;
   }
-  .kicker{font-size:14px;font-weight:600;letter-spacing:.02em;color:var(--accent);margin-bottom:18px}
+  .glow{
+    position:absolute;left:50%;top:8%;transform:translateX(-50%);
+    width:min(1100px,140vw);aspect-ratio:1;pointer-events:none;z-index:-1;
+    background:radial-gradient(closest-side,rgba(255,77,0,.32),rgba(255,77,0,.07) 48%,transparent 72%);
+  }
+  .kicker{font-size:14px;font-weight:600;color:var(--accent);margin-bottom:16px;letter-spacing:.02em}
   h1{
-    font-size:clamp(42px,8vw,88px);font-weight:700;letter-spacing:-.02em;
-    line-height:1.04;max-width:15ch;
+    font-size:clamp(46px,9vw,104px);font-weight:700;letter-spacing:-.025em;line-height:1.02;
+    max-width:13ch;
+    background:linear-gradient(180deg,#fff 35%,#ffd9c4 62%,#ff7a33);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
   }
-  .hero .sub{
-    font-size:clamp(18px,2.4vw,26px);color:var(--dim);font-weight:400;
-    max-width:34ch;margin-top:26px;line-height:1.4;
-  }
-  .hero .sub b{color:var(--ink);font-weight:500}
-  .cta-row{display:flex;gap:26px;align-items:center;margin-top:40px;flex-wrap:wrap;justify-content:center}
+  .hero .sub{font-size:clamp(17px,2.2vw,23px);color:var(--dim);margin-top:22px}
+  .cta-row{display:flex;gap:24px;align-items:center;margin-top:36px;flex-wrap:wrap;justify-content:center}
   .btn{
     display:inline-block;background:var(--accent);color:#000;text-decoration:none;
     font-size:16px;font-weight:500;padding:.85em 1.6em;border-radius:999px;
+    box-shadow:0 0 40px rgba(255,77,0,.35);
     transition:transform .25s,opacity .25s;
   }
-  .btn:hover{opacity:.9;transform:scale(1.02)}
+  .btn:hover{opacity:.92;transform:scale(1.02)}
   .tlink{font-size:16px;color:var(--accent);text-decoration:none}
   .tlink:hover{text-decoration:underline}
   .tlink::after{content:" ›"}
 
+  /* ---------- chat demo ---------- */
+  .demo-sec{padding:clamp(30px,6vh,70px) 0 clamp(90px,14vh,140px)}
+  .demo{
+    max-width:620px;margin:0 auto;border-radius:28px;overflow:hidden;
+    background:linear-gradient(180deg,#1a1a1c,#101011);
+    border:1px solid rgba(255,255,255,.09);
+    box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 70px rgba(255,77,0,.07);
+  }
+  .demo-bar{
+    display:flex;align-items:center;gap:8px;padding:14px 20px;
+    border-bottom:1px solid rgba(255,255,255,.07);
+  }
+  .demo-bar .led{width:8px;height:8px;border-radius:50%;background:#30d158}
+  .demo-bar span{font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--dim)}
+  .demo-body{display:flex;flex-direction:column;gap:12px;padding:24px 20px 26px}
+  .b{max-width:82%;padding:11px 15px;border-radius:18px;font-size:15px;line-height:1.45;text-align:left}
+  .b.user{align-self:flex-end;background:var(--accent);color:#000;border-bottom-right-radius:6px}
+  .b.ai{align-self:flex-start;background:#2c2c2e;border-bottom-left-radius:6px}
+  .b.ai .src{display:inline-block;margin-top:8px;font-size:11.5px;color:var(--dim);
+    border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:2px 10px}
+  .demo-cap{text-align:center;font-size:clamp(17px,2.2vw,22px);color:var(--dim);margin-top:30px}
+  .demo-cap b{color:var(--ink);font-weight:600}
+
   /* ---------- sections ---------- */
-  section{padding:clamp(90px,16vh,150px) 0}
-  .sec-head{text-align:center;margin-bottom:clamp(48px,8vh,76px)}
-  h2{font-size:clamp(32px,5vw,56px);font-weight:700;letter-spacing:-.02em;line-height:1.08}
-  .sec-head p{font-size:clamp(16px,2vw,21px);color:var(--dim);margin:16px auto 0;max-width:44ch}
+  section{padding:clamp(80px,13vh,140px) 0}
+  .sec-head{text-align:center;margin-bottom:clamp(42px,7vh,66px)}
+  h2{font-size:clamp(30px,4.8vw,54px);font-weight:700;letter-spacing:-.02em;line-height:1.08}
 
   /* offers */
   .cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
   @media(max-width:720px){.cards{grid-template-columns:1fr}}
   .card{
-    background:var(--card);border-radius:24px;padding:clamp(28px,4vw,42px);
-    display:flex;flex-direction:column;gap:12px;text-decoration:none;color:inherit;
-    transition:transform .35s cubic-bezier(.2,0,.2,1);
+    position:relative;background:var(--card);border-radius:26px;
+    border:1px solid rgba(255,255,255,.06);
+    padding:clamp(26px,4vw,40px);display:flex;flex-direction:column;gap:10px;
+    text-decoration:none;color:inherit;text-align:left;
+    transition:transform .35s cubic-bezier(.2,0,.2,1),border-color .35s;
   }
-  .card:hover{transform:translateY(-4px)}
-  .card h3{font-size:clamp(21px,2.6vw,27px);font-weight:600;letter-spacing:-.01em}
-  .card .desc{font-size:15.5px;color:var(--dim);line-height:1.55;flex:1}
-  .card .price{font-size:15px;font-weight:500}
+  .card:hover{transform:translateY(-4px);border-color:rgba(255,77,0,.35)}
+  .card svg{width:40px;height:40px;margin-bottom:8px}
+  .card h3{font-size:clamp(20px,2.4vw,25px);font-weight:600;letter-spacing:-.01em}
+  .card .desc{font-size:15px;color:var(--dim);line-height:1.5;flex:1}
+  .card .price{font-size:15px;font-weight:500;margin-top:4px}
   .card .price b{color:var(--accent);font-weight:600}
   .card .go{font-size:15px;color:var(--accent)}
   .card .go::after{content:" ›"}
-  .note{
-    text-align:center;font-size:13.5px;color:var(--dim);margin-top:34px;
-    letter-spacing:.01em;
-  }
+  .note{text-align:center;font-size:13.5px;color:var(--dim);margin-top:30px}
 
   /* method */
-  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(24px,3.5vw,44px);text-align:center}
-  @media(max-width:860px){.steps{grid-template-columns:1fr 1fr;gap:40px 24px}}
-  @media(max-width:480px){.steps{grid-template-columns:1fr}}
-  .step .k{font-size:13px;font-weight:600;letter-spacing:.06em;color:var(--accent);display:block;margin-bottom:12px}
-  .step h3{font-size:20px;font-weight:600;margin-bottom:8px}
-  .step p{font-size:14.5px;color:var(--dim);line-height:1.55;max-width:24ch;margin:0 auto}
-
-  /* studio */
-  .studio{text-align:center}
-  .studio .lead{
-    font-size:clamp(24px,3.6vw,40px);font-weight:600;letter-spacing:-.015em;
-    line-height:1.25;color:var(--dim);max-width:26ch;margin:0 auto;
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px);text-align:center}
+  @media(max-width:860px){.steps{grid-template-columns:1fr 1fr;gap:36px 20px}}
+  .step .n{
+    font-size:clamp(40px,6vw,64px);font-weight:700;letter-spacing:-.03em;line-height:1;
+    background:linear-gradient(180deg,#fff,#ff7a33);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    display:block;margin-bottom:12px;
   }
-  .studio .lead b{color:var(--ink);font-weight:600}
-  .studio .sig{margin-top:34px;font-size:14px;color:var(--dim);line-height:1.9}
+  .step h3{font-size:19px;font-weight:600;margin-bottom:4px}
+  .step p{font-size:14px;color:var(--dim)}
+
+  /* studio strip */
+  .studio{text-align:center;position:relative}
+  .studio .glow2{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:min(800px,120vw);aspect-ratio:1.6;pointer-events:none;z-index:-1;
+    background:radial-gradient(closest-side,rgba(255,77,0,.14),transparent 70%);
+  }
+  .studio .lead{font-size:clamp(24px,3.6vw,42px);font-weight:600;letter-spacing:-.015em;line-height:1.22;max-width:22ch;margin:0 auto}
+  .studio .lead b{
+    background:linear-gradient(90deg,#ff7a33,#ff4d00);
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .studio .sig{margin-top:26px;font-size:14px;color:var(--dim);line-height:1.9}
   .studio .sig b{color:var(--ink);font-weight:600}
+  .studio .more{display:inline-block;margin-top:18px}
 
   /* final */
-  .final{text-align:center;padding-bottom:clamp(110px,18vh,170px)}
-  .final h2{font-size:clamp(40px,7vw,76px)}
-  .final .under{font-size:clamp(16px,2vw,20px);color:var(--dim);margin:18px auto 36px;max-width:38ch}
+  .final{text-align:center;position:relative;padding-bottom:clamp(110px,17vh,170px)}
+  .final .glow3{
+    position:absolute;left:50%;bottom:-20%;transform:translateX(-50%);
+    width:min(900px,130vw);aspect-ratio:1.4;pointer-events:none;z-index:-1;
+    background:radial-gradient(closest-side,rgba(255,77,0,.2),transparent 70%);
+  }
+  .final h2{font-size:clamp(42px,7.5vw,84px);
+    background:linear-gradient(180deg,#fff 40%,#ff7a33);
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .final .under{font-size:clamp(16px,2vw,19px);color:var(--dim);margin:14px auto 32px;max-width:36ch}
   .final .under b{color:var(--ink);font-weight:500}
 
   footer{border-top:1px solid rgba(255,255,255,.08);padding:28px 0 40px}
@@ -124,11 +167,9 @@
   footer a{color:inherit;text-decoration:none}
   footer a:hover{color:var(--ink)}
 
-  /* reveal */
   .rv{opacity:0;transform:translateY(26px);transition:opacity .8s cubic-bezier(.2,0,.2,1),
     transform .8s cubic-bezier(.2,0,.2,1)}
   .rv.in{opacity:1;transform:none}
-
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation:none!important;transition:none!important}
     .rv{opacity:1;transform:none}
@@ -151,49 +192,67 @@
 </header>
 
 <main id="top">
-  <div class="wrap">
 
+  <div class="wrap">
     <section class="hero" aria-label="Intro">
-      <p class="kicker">AI systems · Fixed price · Senior-led</p>
-      <h1>AI automation, shipped absurdly fast.</h1>
-      <p class="sub">Working results for your business — <b>not research projects.</b></p>
+      <div class="glow" aria-hidden="true"></div>
+      <p class="kicker">Heldor Studio</p>
+      <h1>AI that ships.</h1>
+      <p class="sub">Fixed price. Senior-led. Working results.</p>
       <div class="cta-row">
-        <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book an AI readiness audit</a>
+        <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book an audit</a>
         <a class="tlink" href="#offers">See offers</a>
       </div>
     </section>
 
+    <section class="demo-sec" aria-label="Product demo">
+      <div class="demo rv">
+        <div class="demo-bar"><span class="led"></span><span>YOUR AI ASSISTANT</span></div>
+        <div class="demo-body">
+          <div class="b user">Where's the signed contract for the Antwerp deal?</div>
+          <div class="b ai">Found it — signed 12 May by both parties. Payment terms: 30 days, CIF Antwerp. Want the two open action items?<br><span class="src">contract_antwerp_v3.pdf · p.4</span></div>
+          <div class="b user">Yes, and remind me Friday.</div>
+          <div class="b ai">Done — reminder set for Friday 09:00. ✓</div>
+        </div>
+      </div>
+      <p class="demo-cap rv"><b>Your documents. Your systems.</b> Answers in seconds.</p>
+    </section>
+
     <section id="offers">
       <div class="sec-head rv">
-        <h2>Fixed scope. Fixed price.<br>Real outcomes.</h2>
+        <h2>Fixed scope. Fixed price.</h2>
       </div>
       <div class="cards">
         <a class="card rv" href="audit.html">
+          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><circle cx="20" cy="20" r="15" stroke="#ff4d00" stroke-width="2"/><circle cx="20" cy="20" r="8" stroke="#ff7a33" stroke-width="2"/><circle cx="20" cy="20" r="2.5" fill="#ff4d00"/></svg>
           <h3>AI Readiness Audit</h3>
-          <p class="desc">Your operation mapped, every automation opportunity ranked by ROI, and a build-ready roadmap. If it wasn't worth it, you don't pay.</p>
+          <p class="desc">Every automation opportunity in your business, ranked by ROI.</p>
           <p class="price"><b>Launch $799</b> · then $1,200–1,900</p>
           <span class="go">Start here</span>
         </a>
         <a class="card rv" href="mailto:hello@heldor.studio?subject=Automation%20Sprint">
+          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M22 4 8 23h9l-2 13 14-19h-9l2-13z" stroke="#ff4d00" stroke-width="2" stroke-linejoin="round"/></svg>
           <h3>Automation Sprint</h3>
-          <p class="desc">One workflow automated end-to-end — acceptance criteria agreed before we write a line, deployed and documented.</p>
+          <p class="desc">One workflow automated end-to-end, deployed and documented.</p>
           <p class="price">$2,500–4,500</p>
           <span class="go">Enquire</span>
         </a>
         <a class="card rv" href="mailto:hello@heldor.studio?subject=Custom%20AI%20Assistant">
+          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect x="5" y="7" width="24" height="17" rx="6" stroke="#ff4d00" stroke-width="2"/><path d="M12 24v5l6-5" stroke="#ff4d00" stroke-width="2" stroke-linejoin="round"/><rect x="19" y="16" width="16" height="12" rx="5" stroke="#ff7a33" stroke-width="2" fill="#000"/></svg>
           <h3>Custom AI Assistant</h3>
-          <p class="desc">Grounded on your documents and systems — cited answers in Slack, Teams, Telegram, or the web. Where your team already works.</p>
+          <p class="desc">Cited answers from your documents — where your team already works.</p>
           <p class="price">$6,000–12,000</p>
           <span class="go">Enquire</span>
         </a>
         <a class="card rv" href="mailto:hello@heldor.studio?subject=Care%20Retainer">
+          <svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><path d="M33 20a13 13 0 1 1-4-9.4" stroke="#ff4d00" stroke-width="2" stroke-linecap="round"/><path d="M33 6v6h-6" stroke="#ff4d00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="20" r="3" fill="#ff7a33"/></svg>
           <h3>Care Retainer</h3>
-          <p class="desc">Proactive monitoring, monthly improvements, priority response. Your systems never go stale.</p>
+          <p class="desc">Monitored, tuned, and improving every month.</p>
           <p class="price">$450 / $950 per month</p>
           <span class="go">Enquire</span>
         </a>
       </div>
-      <p class="note rv">Founding-client price — first three audit slots only. No hourly billing, no scope creep.</p>
+      <p class="note rv">Founding-client price — first three audit slots only.</p>
     </section>
 
     <section id="method">
@@ -201,26 +260,28 @@
         <h2>How it works</h2>
       </div>
       <div class="steps">
-        <div class="step rv"><span class="k">01 · Audit</span><h3>Map</h3><p>Workflows mapped, opportunities ranked by ROI.</p></div>
-        <div class="step rv"><span class="k">02 · Build</span><h3>Ship</h3><p>Fixed scope and price, acceptance criteria up front.</p></div>
-        <div class="step rv"><span class="k">03 · Deliver</span><h3>Hand over</h3><p>Working software, a walkthrough, a fixed revision window.</p></div>
-        <div class="step rv"><span class="k">04 · Care</span><h3>Improve</h3><p>Monitored, tuned, and improving every month.</p></div>
+        <div class="step rv"><span class="n">1</span><h3>Map</h3><p>We find where the hours go.</p></div>
+        <div class="step rv"><span class="n">2</span><h3>Ship</h3><p>Fixed scope, fixed price.</p></div>
+        <div class="step rv"><span class="n">3</span><h3>Hand over</h3><p>Working software, documented.</p></div>
+        <div class="step rv"><span class="n">4</span><h3>Improve</h3><p>Better every month.</p></div>
       </div>
     </section>
 
     <section class="studio" id="studio">
-      <p class="lead rv">Every engagement is <b>senior-led</b> — run by a founder who shipped a <b>company-wide AI assistant</b> used daily across an international trading group.</p>
-      <p class="sig rv"><b>Omer B.</b> — Founder<br>Deal workflows · Document intelligence · Meeting automation</p>
+      <div class="glow2" aria-hidden="true"></div>
+      <p class="lead rv">The person you talk to is the person who <b>ships.</b></p>
+      <p class="sig rv"><b>Omer B.</b> — Founder<br>Shipped a company-wide AI assistant for an international trading group.</p>
+      <a class="tlink more rv" href="about.html">About the studio</a>
     </section>
 
     <section class="final" id="audit">
+      <div class="glow3" aria-hidden="true"></div>
       <h2 class="rv">Let's build.</h2>
-      <p class="under rv">Know exactly what AI can do for your business.<br>
-        <b>Three founding audit slots at $799.</b> When they're gone, they're gone.</p>
-      <a class="btn rv" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book an AI readiness audit</a>
+      <p class="under rv"><b>Three founding audit slots at $799.</b><br>When they're gone, they're gone.</p>
+      <a class="btn rv" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Book an audit</a>
     </section>
-
   </div>
+
 </main>
 
 <footer>
