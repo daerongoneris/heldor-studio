@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Heldor Studio — Working AI, shipped absurdly fast</title>
+<title>The Studio — Heldor Studio</title>
 <meta name="theme-color" content="#0e0c0b">
 <meta name="color-scheme" content="dark">
-<meta name="description" content="Heldor Studio — senior-led AI studio. Fixed-scope, fixed-price AI systems your business uses on Monday morning.">
+<meta name="description" content="Senior-led, small, relentless. Every engagement run by the founder who ships.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%230e0c0b'/%3E%3Cpath d='M18 14v36M46 14v36M18 32h28' stroke='%23f2f0ea' stroke-width='7'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,7 +26,6 @@
   ::selection{background:var(--accent);color:#0e0c0b}
   .wrap{max-width:1060px;margin:0 auto;padding:0 22px}
 
-  /* film grain over everything */
   .grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:2000;
     opacity:.07;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
@@ -40,8 +39,7 @@
   header nav a{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .25s}
   header nav a:hover{color:var(--ink)}
 
-  /* ————— HERO: dawn horizon ————— */
-  .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;
+  .hero{position:relative;min-height:72svh;display:flex;align-items:center;overflow:hidden;
     background:var(--bg)}
   .dawn-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
     animation:breathe 9s ease-in-out infinite}
@@ -53,57 +51,17 @@
       radial-gradient(1px 1px at 32% 8%,rgba(242,235,222,.7) 50%,transparent 51%),
       radial-gradient(1px 1px at 90% 34%,rgba(242,235,222,.45) 50%,transparent 51%),
       radial-gradient(1.2px 1.2px at 68% 6%,rgba(242,235,222,.55) 50%,transparent 51%)}
-  .hero .wrap{position:relative;z-index:3;padding-top:56px;padding-bottom:20svh}
+  .hero .wrap{position:relative;z-index:3;padding-top:80px;padding-bottom:12svh}
   .kicker{font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;
     color:var(--amber);margin-bottom:26px}
-  h1{font-family:var(--serif);font-weight:300;font-size:clamp(48px,10.5vw,118px);
-    letter-spacing:-.015em;line-height:1.02;max-width:15ch}
+  h1{font-family:var(--serif);font-weight:300;font-size:clamp(44px,9.5vw,104px);
+    letter-spacing:-.015em;line-height:1.04;max-width:16ch}
   h1 em{font-style:italic;font-weight:400;
     background:linear-gradient(100deg,var(--accent),var(--amber));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .sub{font-size:clamp(16px,2vw,19px);color:var(--dim);margin-top:26px;max-width:40ch}
-  .cta-row{display:flex;gap:18px;align-items:center;margin-top:40px;flex-wrap:wrap}
-  .btn{font-size:15px;font-weight:500;text-decoration:none;color:#0e0c0b;background:var(--ink);
-    padding:15px 28px;border-radius:999px;transition:background .25s,transform .25s}
-  .btn:hover{background:var(--amber);transform:translateY(-1px)}
-  .tlink{font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:3px;transition:color .25s}
-  .tlink:hover{color:var(--amber)}
-  .scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;
-    font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,235,222,.55)}
-
-  /* ————— proof strip ————— */
-  .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    padding:17px 0;background:var(--bg2)}
-  .proof .wrap{display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:center}
-  .proof span{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
-  .proof b{color:var(--amber);font-weight:600}
 
   section{padding:96px 0}
-  .sec-head{margin-bottom:48px}
-  .eyebrow{font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;
-    color:var(--amber);display:block;margin-bottom:14px}
-  h2{font-family:var(--serif);font-size:clamp(32px,5.4vw,58px);font-weight:300;letter-spacing:-.01em}
 
-  /* ————— offers: editorial index ————— */
-  .offer{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1.55fr) auto;gap:18px;
-    align-items:baseline;padding:30px 6px;border-top:1px solid var(--line);
-    text-decoration:none;color:inherit;position:relative;transition:padding .3s}
-  .offer:last-of-type{border-bottom:1px solid var(--line)}
-  .offer::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,92,28,.09),transparent 60%);
-    opacity:0;transition:opacity .3s;pointer-events:none}
-  .offer:hover{padding-left:16px;padding-right:16px}
-  .offer:hover::after{opacity:1}
-  .offer h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:400}
-  .offer p{font-size:14.5px;color:var(--dim)}
-  .offer .price{font-size:13.5px;font-weight:500;white-space:nowrap;text-align:right;color:var(--dim)}
-  .offer .price b{color:var(--amber);display:block;font-size:16px}
-  @media(max-width:700px){
-    .offer{grid-template-columns:1fr;gap:6px}
-    .offer .price{text-align:left;margin-top:2px}
-  }
-  .note{font-size:13px;color:var(--dim);margin-top:26px;letter-spacing:.02em}
-
-  /* ————— contour art band + statement ————— */
   .band{position:relative;overflow:hidden;background:var(--bg2);
     border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .band svg.contours{position:absolute;inset:0;width:100%;height:100%;opacity:.8}
@@ -116,26 +74,32 @@
   .band .sig{margin-top:26px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
   .band .sig b{color:var(--ink)}
 
-  /* ————— method ————— */
-  .method .row{display:grid;grid-template-columns:repeat(4,1fr);gap:34px}
-  @media(max-width:700px){.method .row{grid-template-columns:1fr 1fr;gap:38px 22px}}
-  .m .n{font-family:var(--serif);font-style:italic;font-weight:300;font-size:52px;
-    display:block;line-height:1;margin-bottom:14px;
-    background:linear-gradient(150deg,var(--accent),var(--amber));
-    -webkit-background-clip:text;background-clip:text;color:transparent}
-  .m h3{font-size:16px;font-weight:600;letter-spacing:.02em;margin-bottom:5px}
-  .m p{font-size:13.5px;color:var(--dim)}
+  .founder{max-width:640px;margin:0 auto;text-align:center}
+  .founder p{font-size:clamp(16px,2vw,19px);color:var(--dim);line-height:1.7}
+  .founder p b{color:var(--ink);font-weight:500}
+  .founder .tags{margin-top:22px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .founder .tags b{color:var(--amber);font-weight:600}
 
-  /* ————— final ————— */
-  .final{position:relative;padding:130px 0 150px;text-align:center;overflow:hidden}
-  .final h2{font-size:clamp(44px,8.5vw,86px);position:relative}
+  .vals{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+  @media(max-width:700px){.vals{grid-template-columns:1fr;gap:34px}}
+  .val h3{font-family:var(--serif);font-weight:400;font-size:clamp(22px,3vw,30px);margin-bottom:8px}
+  .val h3 em{font-style:italic;
+    background:linear-gradient(100deg,var(--accent),var(--amber));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .val p{font-size:14.5px;color:var(--dim)}
+
+  .final{position:relative;padding:110px 0 150px;text-align:center;overflow:hidden}
+  .final h2{font-family:var(--serif);font-weight:300;letter-spacing:-.01em;
+    font-size:clamp(44px,8.5vw,86px)}
   .final h2 em{font-style:italic;font-weight:400;
     background:linear-gradient(100deg,var(--accent),var(--amber));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .final p{font-size:16px;color:var(--dim);margin:18px 0 38px;position:relative}
+  .final p{font-size:16px;color:var(--dim);margin:18px 0 38px}
   .final p b{color:var(--ink)}
+  .btn{font-size:15px;font-weight:500;text-decoration:none;color:#0e0c0b;background:var(--ink);
+    padding:15px 28px;border-radius:999px;transition:background .25s,transform .25s;display:inline-block}
+  .btn:hover{background:var(--amber);transform:translateY(-1px)}
 
-  /* ————— footer with giant wordmark ————— */
   footer{border-top:1px solid var(--line);padding:34px 0 0;overflow:hidden}
   footer .links{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
     font-size:12px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
@@ -156,10 +120,10 @@
 
 <header>
   <div class="wrap">
-    <a class="brand" href="#">Heldor</a>
+    <a class="brand" href="index.html">Heldor</a>
     <nav>
+      <a href="index.html#offers">Offers</a>
       <a href="audit.html">Audit</a>
-      <a href="about.html">About</a>
       <a href="mailto:hello@heldor.studio">Contact</a>
     </nav>
   </div>
@@ -192,48 +156,10 @@
       <circle cx="500" cy="1600" r="780" fill="none" stroke="#ffd7a0" stroke-opacity="0.95" stroke-width="2"/>
     </svg>
     <div class="wrap">
-      <p class="kicker">AI Studio — Fixed Price, Senior-Led</p>
-      <h1>Working AI, shipped <em>absurdly&nbsp;fast.</em></h1>
-      <p class="sub">Not research projects. Systems your business uses on Monday morning.</p>
-      <div class="cta-row">
-        <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799">Book an audit</a>
-        <a class="tlink" href="#offers">See the offers</a>
-      </div>
+      <p class="kicker">The studio</p>
+      <h1>Senior-led, <em>always.</em></h1>
     </div>
-    <span class="scroll-hint">Scroll</span>
   </section>
-
-  <div class="proof">
-    <div class="wrap">
-      <span>Fixed price</span><span>Senior-led</span>
-      <span><b>3 founding slots · $799</b></span><span>No hourly billing</span>
-    </div>
-  </div>
-
-  <div class="wrap">
-    <section id="offers">
-      <div class="sec-head"><span class="eyebrow">The offers</span><h2>Fixed scope. Fixed price.</h2></div>
-      <div class="offers">
-        <a class="offer" href="mailto:hello@heldor.studio?subject=AI%20Readiness%20Audit">
-          <h3>AI Readiness Audit</h3><p>Every automation opportunity, ranked by ROI.</p>
-          <span class="price"><b>$799 launch</b>then $1,200–1,900</span>
-        </a>
-        <a class="offer" href="mailto:hello@heldor.studio?subject=Automation%20Sprint">
-          <h3>Automation Sprint</h3><p>One workflow automated end-to-end, deployed.</p>
-          <span class="price"><b>$2,500+</b>to $4,500</span>
-        </a>
-        <a class="offer" href="mailto:hello@heldor.studio?subject=Custom%20AI%20Assistant">
-          <h3>Custom AI Assistant</h3><p>Cited answers from your documents, where your team works.</p>
-          <span class="price"><b>$6,000+</b>to $12,000</span>
-        </a>
-        <a class="offer" href="mailto:hello@heldor.studio?subject=Care%20Retainer">
-          <h3>Care Retainer</h3><p>Monitored, tuned, improving every month.</p>
-          <span class="price"><b>$450/mo</b>or $950/mo</span>
-        </a>
-      </div>
-      <p class="note">Founding-client price — first three audit slots only.</p>
-    </section>
-  </div>
 
   <div class="band">
     <svg class="contours" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -252,26 +178,31 @@
         fill="none" stroke="rgba(255,140,60,.55)" stroke-width="1.4"/>
     </svg>
     <div class="inner">
-      <p class="q">The person you talk to is the person who <b>ships.</b></p>
-      <p class="sig"><b>The founder</b> · shipped a company-wide AI assistant for an international trading group</p>
+      <p class="q">No juniors. No hand-offs. The person you talk to is the person who <b>ships.</b></p>
+      <p class="sig"><b>The founder</b> — shipped a company-wide AI assistant for an international trading group</p>
     </div>
   </div>
 
   <div class="wrap">
-    <section class="method" id="method">
-      <div class="sec-head"><span class="eyebrow">The method</span><h2>Four moves.</h2></div>
-      <div class="row">
-        <div class="m"><span class="n">i</span><h3>Map</h3><p>Where the hours go.</p></div>
-        <div class="m"><span class="n">ii</span><h3>Ship</h3><p>Fixed scope, fixed price.</p></div>
-        <div class="m"><span class="n">iii</span><h3>Hand over</h3><p>Working software, documented.</p></div>
-        <div class="m"><span class="n">iv</span><h3>Improve</h3><p>Better every month.</p></div>
+    <section>
+      <div class="founder">
+        <p>Every engagement runs under the direct oversight of one senior builder — an enterprise AI lead whose systems are <b>used daily across an international trading group.</b></p>
+        <p class="tags"><b>Deal workflows</b> · <b>Document intelligence</b> · <b>Meeting automation</b></p>
+      </div>
+    </section>
+
+    <section>
+      <div class="vals">
+        <div class="val"><h3><em>Small.</em></h3><p>Deliberately. Fewer clients, deeper work, faster decisions.</p></div>
+        <div class="val"><h3><em>Fixed price.</em></h3><p>Scope and price agreed before we write a line. No hourly billing.</p></div>
+        <div class="val"><h3><em>Relentless.</em></h3><p>Working results, shipped absurdly fast — not research projects.</p></div>
       </div>
     </section>
 
     <section class="final">
-      <h2>Let's <em>build.</em></h2>
-      <p><b>Three founding audit slots at $799.</b> When they're gone, they're gone.</p>
-      <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799">Book an audit</a>
+      <h2>Talk to the <em>founder.</em></h2>
+      <p>One email. Tell us which business, and <b>what takes the most time right now.</b></p>
+      <a class="btn" href="mailto:hello@heldor.studio?subject=Founding-client%20audit%20%E2%80%94%20%24799&body=Which%20business%2C%20and%20what%20takes%20the%20most%20time%20right%20now%3F%0A%0A">Get in touch</a>
     </section>
   </div>
 </main>
@@ -283,6 +214,5 @@
   </div>
   <div class="wordmark" aria-hidden="true">HELDOR</div>
 </footer>
-
 </body>
 </html>
