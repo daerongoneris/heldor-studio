@@ -11,6 +11,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+/* motion gate: .fx = animate, .rm = reduced motion; .nofx = failsafe if the main script never runs */
+(function(){var r=document.documentElement,m=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;r.className+=m?' js rm':' js fx';setTimeout(function(){if(!window.__dawnOK)r.className+=' nofx'},2500)})();
+</script>
 <style>
   :root{
     color-scheme:dark;
@@ -25,24 +29,34 @@
     -webkit-font-smoothing:antialiased;overflow-x:hidden}
   ::selection{background:var(--accent);color:#0e0c0b}
   .wrap{max-width:1060px;margin:0 auto;padding:0 22px}
+  a:focus-visible{outline:1px solid var(--amber);outline-offset:5px;border-radius:2px}
 
   /* film grain over everything */
   .grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:2000;
     opacity:.07;
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
 
+  /* ————— the one continuous sky (built by JS, fixed behind everything) ————— */
+  .sky{position:fixed;left:0;top:0;width:100%;height:100vh;height:100lvh;z-index:0;pointer-events:none;overflow:hidden}
+  .sky canvas{position:absolute;left:0;top:0;width:100%;height:100%}
+  .sky canvas.stars-l{width:auto;height:auto;opacity:0;will-change:transform,opacity}
+  .nofx .sky{display:none}
+  main,footer{position:relative;z-index:1}
+
   header{position:fixed;top:0;left:0;right:0;z-index:100;height:60px;
-    background:linear-gradient(rgba(14,12,11,.75),rgba(14,12,11,0));
-    -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+    background:linear-gradient(rgba(14,12,11,.97),rgba(14,12,11,.9) 70%,rgba(14,12,11,.66))}
+  header::after{content:"";position:absolute;left:0;right:0;top:100%;height:52px;pointer-events:none;
+    background:linear-gradient(rgba(14,12,11,.66),rgba(14,12,11,.22) 55%,rgba(14,12,11,0))}
   header .wrap{height:100%;display:flex;align-items:center;justify-content:space-between}
   .brand{font-family:var(--serif);font-size:20px;font-weight:600;color:var(--ink);text-decoration:none;letter-spacing:.01em}
   header nav{display:flex;gap:24px}
   header nav a{font-size:12.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);text-decoration:none;transition:color .25s}
-  header nav a:hover{color:var(--ink)}
+  @media (hover:hover){header nav a:hover{color:var(--ink)}}
 
-  /* ————— HERO: dawn horizon ————— */
+  /* ————— HERO ————— */
   .hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;
     background:var(--bg)}
+  .fx .hero{background:transparent}
   .dawn-svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;
     animation:breathe 9s ease-in-out infinite}
   @keyframes breathe{0%,100%{opacity:1}50%{opacity:.82}}
@@ -53,7 +67,9 @@
       radial-gradient(1px 1px at 32% 8%,rgba(242,235,222,.7) 50%,transparent 51%),
       radial-gradient(1px 1px at 90% 34%,rgba(242,235,222,.45) 50%,transparent 51%),
       radial-gradient(1.2px 1.2px at 68% 6%,rgba(242,235,222,.55) 50%,transparent 51%)}
-  .hero .wrap{position:relative;z-index:3;padding-top:56px;padding-bottom:20svh}
+  .fx .hero>.stars,.fx .hero>.dawn-svg{display:none}
+  .nofx .hero>.stars,.nofx .hero>.dawn-svg{display:block}
+  .hero .wrap{position:relative;z-index:3;padding-top:56px;padding-bottom:20svh;width:100%}
   .kicker{font-size:12px;font-weight:600;letter-spacing:.26em;text-transform:uppercase;
     color:var(--amber);margin-bottom:26px}
   h1{font-family:var(--serif);font-weight:300;font-size:clamp(48px,10.5vw,118px);
@@ -63,20 +79,42 @@
     -webkit-background-clip:text;background-clip:text;color:transparent}
   .sub{font-size:clamp(16px,2vw,19px);color:var(--dim);margin-top:26px;max-width:40ch}
   .cta-row{display:flex;gap:18px;align-items:center;margin-top:40px;flex-wrap:wrap}
-  .btn{font-size:15px;font-weight:500;text-decoration:none;color:#0e0c0b;background:var(--ink);
+  .btn{display:inline-block;font-size:15px;font-weight:500;text-decoration:none;color:#0e0c0b;background:var(--ink);
     padding:15px 28px;border-radius:999px;transition:background .25s,transform .25s}
-  .btn:hover{background:var(--amber);transform:translateY(-1px)}
   .tlink{font-size:15px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--accent);padding-bottom:3px;transition:color .25s}
-  .tlink:hover{color:var(--amber)}
+  @media (hover:hover){
+    .btn:hover{background:var(--amber);transform:translateY(-1px)}
+    .tlink:hover{color:var(--amber)}
+  }
   .scroll-hint{position:absolute;left:50%;bottom:26px;transform:translateX(-50%);z-index:3;
     font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:rgba(242,235,222,.55)}
 
+  /* word masks (created by JS only when motion is on) */
+  .fx .w{display:inline-block;overflow:hidden;vertical-align:bottom;
+    padding:.1em .16em .24em .05em;margin:-.1em -.16em -.24em -.05em}
+  .fx .wi{display:inline-block}
+  .nw{white-space:nowrap}
+  .split em,.split b{background:none;-webkit-background-clip:border-box;background-clip:border-box;color:inherit}
+  .fx .grad{background-image:linear-gradient(100deg,var(--accent),var(--amber));
+    -webkit-background-clip:text;background-clip:text;color:transparent}
+  .fx .eyebrow{overflow:hidden}
+  .ebi{display:inline-block}
+
+  /* hold the hero for the first JS frame only; failsafe shows everything */
+  .fx:not(.ready):not(.nofx) header,.fx:not(.ready):not(.nofx) .hero .wrap,.fx:not(.ready):not(.nofx) .scroll-hint{opacity:0}
+  .nofx [style]{opacity:1!important;transform:none!important}
+  .nofx .scroll-hint{transform:translateX(-50%)!important}
+
   /* ————— proof strip ————— */
-  .proof{border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-    padding:17px 0;background:var(--bg2)}
+  .proof{position:relative;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:17px 0;background:var(--bg2);overflow:hidden}
+  .js .proof{background:rgba(17,15,14,.74);border-color:transparent}
   .proof .wrap{display:flex;flex-wrap:wrap;gap:8px 26px;justify-content:center}
   .proof span{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--dim)}
   .proof b{color:var(--amber);font-weight:600}
+  .pl{position:absolute;left:0;right:0;height:1px;pointer-events:none}
+  .pl.t{top:0;background:linear-gradient(90deg,rgba(242,235,222,.1),rgba(255,177,92,.6) var(--sx,70%),rgba(242,235,222,.1))}
+  .pl.b{bottom:0;background:var(--line)}
 
   section{padding:96px 0}
   .sec-head{margin-bottom:48px}
@@ -87,66 +125,101 @@
   /* ————— offers: editorial index ————— */
   .offer{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1.55fr) auto;gap:18px;
     align-items:baseline;padding:30px 6px;border-top:1px solid var(--line);
-    text-decoration:none;color:inherit;position:relative;transition:padding .3s}
+    text-decoration:none;color:inherit;position:relative}
   .offer:last-of-type{border-bottom:1px solid var(--line)}
-  .offer::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,rgba(255,92,28,.09),transparent 60%);
-    opacity:0;transition:opacity .3s;pointer-events:none}
-  .offer:hover{padding-left:16px;padding-right:16px}
-  .offer:hover::after{opacity:1}
+  .js .offer{border-color:transparent}
+  .offer .rule{position:absolute;left:0;right:0;top:-1px;height:1px;background:var(--line);transform-origin:0 50%;pointer-events:none}
+  .offer .rule.b{top:auto;bottom:-1px}
+  .offer .wash{position:absolute;inset:0;pointer-events:none;opacity:0;
+    background:linear-gradient(100deg,rgba(255,92,28,.14),rgba(255,92,28,.05) 45%,rgba(255,92,28,0) 78%)}
+  .offer .bar{position:absolute;left:0;top:24%;bottom:24%;width:2px;opacity:0;pointer-events:none;
+    background:linear-gradient(var(--accent),var(--amber));transform-origin:50% 50%}
   .offer h3{font-family:var(--serif);font-size:clamp(22px,3vw,30px);font-weight:400}
   .offer p{font-size:14.5px;color:var(--dim)}
   .offer .price{font-size:13.5px;font-weight:500;white-space:nowrap;text-align:right;color:var(--dim)}
   .offer .price b{color:var(--amber);display:block;font-size:16px}
+  @media (hover:hover){
+    .offer h3,.offer p,.offer .price{transition:transform .45s cubic-bezier(.2,.8,.2,1)}
+    .offer:hover h3,.offer:hover p{transform:translateX(10px)}
+    .offer:hover .price{transform:translateX(-10px)}
+    .offer:hover .wash,.offer:hover .bar{opacity:1!important}
+  }
   @media(max-width:700px){
     .offer{grid-template-columns:1fr;gap:6px}
     .offer .price{text-align:left;margin-top:2px}
+    .offer:hover .price{transform:translateX(10px)}
   }
   .note{font-size:13px;color:var(--dim);margin-top:26px;letter-spacing:.02em}
+  .js .sub,.js .offer p,.js .offer .price,.js .note,.js .m p,.js .final p,.js .band .sig,.js .proof span,.js footer .links{text-shadow:0 0 14px rgba(10,8,7,.6),0 1px 2px rgba(10,8,7,.5)}
 
-  /* ————— contour art band + statement ————— */
+  /* ————— statement band ————— */
   .band{position:relative;overflow:hidden;background:var(--bg2);
     border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .js .band{background:transparent;border-color:transparent}
+  .fx .band{overflow:visible;height:165vh;height:165svh}
+  .band-pin{position:relative;overflow:hidden}
+  .fx .band-pin{position:sticky;top:0;height:100vh;height:100svh;display:flex;align-items:center}
   .band svg.contours{position:absolute;inset:0;width:100%;height:100%;opacity:.8}
-  .band .inner{position:relative;z-index:2;padding:clamp(90px,16vw,150px) 22px;text-align:center}
+  .band .inner{position:relative;z-index:2;padding:clamp(90px,16vw,150px) 22px;max-width:1060px;margin:0 auto;width:100%}
   .band p.q{font-family:var(--serif);font-style:italic;font-weight:300;
-    font-size:clamp(26px,4.6vw,46px);line-height:1.25;max-width:24ch;margin:0 auto}
+    font-size:clamp(26px,4.6vw,46px);line-height:1.25;max-width:24ch}
   .band p.q b{font-style:normal;font-weight:600;
     background:linear-gradient(100deg,var(--accent),var(--amber));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .band .sig{margin-top:26px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+  .band .sig{margin-top:26px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);max-width:44ch}
   .band .sig b{color:var(--ink)}
 
   /* ————— method ————— */
-  .method .row{display:grid;grid-template-columns:repeat(4,1fr);gap:34px}
-  @media(max-width:700px){.method .row{grid-template-columns:1fr 1fr;gap:38px 22px}}
+  .method .row{display:grid;grid-template-columns:repeat(4,1fr);gap:34px;position:relative}
+  .js .method .row{padding-top:40px}
   .m .n{font-family:var(--serif);font-style:italic;font-weight:300;font-size:52px;
-    display:block;line-height:1;margin-bottom:14px;
+    display:block;line-height:1;margin-bottom:14px;transform-origin:20% 70%;
     background:linear-gradient(150deg,var(--accent),var(--amber));
     -webkit-background-clip:text;background-clip:text;color:transparent}
+  .m .n.nx{position:relative;background:none;color:rgba(242,235,222,.5)}
+  .m .n .ng{position:absolute;left:0;top:0;opacity:0;pointer-events:none;
+    background:linear-gradient(150deg,var(--accent),var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent}
   .m h3{font-size:16px;font-weight:600;letter-spacing:.02em;margin-bottom:5px}
   .m p{font-size:13.5px;color:var(--dim)}
+  .rail{position:absolute;left:0;top:0;pointer-events:none;background:rgba(242,235,222,.13)}
+  .rail .fill{position:absolute;left:0;top:0;width:100%;height:100%;background:linear-gradient(90deg,var(--accent),var(--amber));transform-origin:0 0}
+  .rail.v .fill{background:linear-gradient(var(--accent),var(--amber))}
+  .rail .bead{position:absolute;left:0;top:0;width:9px;height:9px;margin:-4px 0 0 -4px;border-radius:50%;
+    background:#ffe6c2;box-shadow:0 0 0 3px rgba(255,150,70,.16),0 0 16px 5px rgba(255,110,40,.5)}
+  @media(max-width:700px){
+    .method .row{grid-template-columns:1fr;gap:0}
+    .js .method .row{padding-top:0;padding-left:30px}
+    .m{display:grid;grid-template-columns:58px minmax(0,1fr);column-gap:6px;align-items:baseline;padding:13px 0}
+    .m .n{grid-row:1 / span 2;font-size:46px;margin:0}
+    .m h3,.m p{grid-column:2}
+  }
 
   /* ————— final ————— */
-  .final{position:relative;padding:130px 0 150px;text-align:center;overflow:hidden}
+  .final{position:relative;padding:130px 0 150px}
+  .fx .final{min-height:calc(100vh - 79px - .78 * clamp(88px,21vw,300px));min-height:calc(100svh - 79px - .78 * clamp(88px,21vw,300px));
+    display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;padding:max(120px,17vh) 0 60px}
   .final h2{font-size:clamp(44px,8.5vw,86px);position:relative}
   .final h2 em{font-style:italic;font-weight:400;
     background:linear-gradient(100deg,var(--accent),var(--amber));
     -webkit-background-clip:text;background-clip:text;color:transparent}
-  .final p{font-size:16px;color:var(--dim);margin:18px 0 38px;position:relative}
+  .final p{font-size:16px;color:var(--dim);margin:18px 0 38px;position:relative;max-width:34ch}
   .final p b{color:var(--ink)}
+  .js .final p{color:#bdb3a3}
 
   /* ————— footer with giant wordmark ————— */
   footer{border-top:1px solid var(--line);padding:34px 0 0;overflow:hidden}
+  .js footer{border-top-color:transparent}
   footer .links{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;
     font-size:12px;letter-spacing:.08em;color:var(--dim);text-transform:uppercase}
   footer a{color:inherit;text-decoration:none;transition:color .25s}
-  footer a:hover{color:var(--amber)}
+  @media (hover:hover){footer a:hover{color:var(--amber)}}
   .wordmark{font-family:var(--serif);font-weight:600;text-align:center;user-select:none;
     font-size:clamp(88px,21vw,300px);line-height:.78;letter-spacing:.01em;
     margin-top:26px;transform:translateY(14%);
     color:transparent;-webkit-text-stroke:1px rgba(242,235,222,.22)}
 
   @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
     .dawn-svg{animation:none}
   }
 </style>
@@ -236,24 +309,28 @@
   </div>
 
   <div class="band">
-    <svg class="contours" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-      <g fill="none" stroke="rgba(242,235,222,.10)" stroke-width="1.2">
-        <ellipse cx="600" cy="310" rx="560" ry="270" transform="rotate(-6 600 310)"/>
-        <ellipse cx="600" cy="310" rx="500" ry="234" transform="rotate(-3 600 310)"/>
-        <ellipse cx="600" cy="310" rx="440" ry="200" transform="rotate(2 600 310)"/>
-        <ellipse cx="600" cy="310" rx="382" ry="168" transform="rotate(6 600 310)"/>
-        <ellipse cx="600" cy="310" rx="326" ry="139" transform="rotate(11 600 310)"/>
-        <ellipse cx="600" cy="310" rx="272" ry="112" transform="rotate(15 600 310)"/>
-        <ellipse cx="600" cy="310" rx="220" ry="88" transform="rotate(20 600 310)"/>
-        <ellipse cx="600" cy="310" rx="170" ry="66" transform="rotate(26 600 310)"/>
-        <ellipse cx="600" cy="310" rx="122" ry="46" transform="rotate(31 600 310)"/>
-      </g>
-      <ellipse cx="600" cy="310" rx="76" ry="28" transform="rotate(37 600 310)"
-        fill="none" stroke="rgba(255,140,60,.55)" stroke-width="1.4"/>
-    </svg>
-    <div class="inner">
-      <p class="q">The person you talk to is the person who <b>ships.</b></p>
-      <p class="sig"><b>The founder</b> · shipped a company-wide AI assistant for an international trading group</p>
+    <div class="band-pin">
+      <svg class="contours" viewBox="0 0 1200 620" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <g class="ringset">
+          <g fill="none" stroke="rgba(242,235,222,.10)" stroke-width="1.2">
+            <ellipse cx="600" cy="310" rx="560" ry="270" transform="rotate(-6 600 310)"/>
+            <ellipse cx="600" cy="310" rx="500" ry="234" transform="rotate(-3 600 310)"/>
+            <ellipse cx="600" cy="310" rx="440" ry="200" transform="rotate(2 600 310)"/>
+            <ellipse cx="600" cy="310" rx="382" ry="168" transform="rotate(6 600 310)"/>
+            <ellipse cx="600" cy="310" rx="326" ry="139" transform="rotate(11 600 310)"/>
+            <ellipse cx="600" cy="310" rx="272" ry="112" transform="rotate(15 600 310)"/>
+            <ellipse cx="600" cy="310" rx="220" ry="88" transform="rotate(20 600 310)"/>
+            <ellipse cx="600" cy="310" rx="170" ry="66" transform="rotate(26 600 310)"/>
+            <ellipse cx="600" cy="310" rx="122" ry="46" transform="rotate(31 600 310)"/>
+          </g>
+          <ellipse cx="600" cy="310" rx="76" ry="28" transform="rotate(37 600 310)"
+            fill="none" stroke="rgba(255,140,60,.55)" stroke-width="1.4"/>
+        </g>
+      </svg>
+      <div class="inner">
+        <p class="q">The person you talk to is the person who <b>ships.</b></p>
+        <p class="sig"><b>The founder</b> · shipped a company-wide AI assistant for an international trading group</p>
+      </div>
     </div>
   </div>
 
@@ -284,5 +361,702 @@
   <div class="wordmark" aria-hidden="true">HELDOR</div>
 </footer>
 
+<script>
+/*
+  Dawn in motion — one continuous shot.
+  Every animated value is a pure function of (t = seconds since load, y = scrollY),
+  plus the moment a headline/numeral crossed its trigger line. window.__seek(t, y)
+  renders any frame on demand (used for frame-by-frame review).
+*/
+(function () {
+  'use strict';
+  window.__dawnOK = true;
+  var root = document.documentElement;
+  try { init(); }
+  catch (err) { root.classList.add('nofx'); if (window.console) console.warn('dawn: static fallback', err); }
+
+  function init() {
+    const FX = root.classList.contains('fx');
+    const SEEK = !!window.__DAWN_SEEK;
+    const T0 = performance.now();
+    let vt = null;
+    const clock = () => (vt != null ? vt : (performance.now() - T0) / 1000);
+    /* the type waits for its face (never longer than 0.45 s) so words never swap fonts mid-rise; the sky starts at once */
+    let textAt = SEEK ? 0 : null;
+    const markText = () => { if (textAt == null) { textAt = Math.min(clock(), 0.45); request(); } };
+    if (!SEEK) {
+      if (document.fonts && document.fonts.load) {
+        Promise.all(['300 1em Fraunces', 'italic 400 1em Fraunces', '400 1em Inter', '600 1em Inter']
+          .map((f) => document.fonts.load(f).catch(() => 0))).then(markText, markText);
+      } else textAt = 0;
+      setTimeout(markText, 450);
+    }
+
+    /* ---------- math ---------- */
+    const cl = (x) => (x < 0 ? 0 : x > 1 ? 1 : x);
+    const clamp = (x, a, b) => (x < a ? a : x > b ? b : x);
+    const sm = (u) => u * u * (3 - 2 * u);
+    const smr = (u) => u * u * u * (u * (u * 6 - 15) + 10);
+    const sq = (x) => x * x;
+    /* closed-form damped spring, 0 -> 1 (overshoots a hair, settles) */
+    function spring(tau, f, z) {
+      if (tau <= 0) return 0;
+      const w = 2 * Math.PI * f, wd = w * Math.sqrt(1 - z * z);
+      return 1 - Math.exp(-z * w * tau) * (Math.cos(wd * tau) + (z * w / wd) * Math.sin(wd * tau));
+    }
+    const mixc = (a, b, u) => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] + (b[2] - a[2]) * u];
+    const rgba = (c, a) => 'rgba(' + (c[0] | 0) + ',' + (c[1] | 0) + ',' + (c[2] | 0) + ',' + cl(a).toFixed(3) + ')';
+
+    /* cached style writes: only touch the DOM when a value really changes */
+    function setT(el, v) { if (el._t !== v) { el._t = v; el.style.transform = v; } }
+    function setO(el, v) { v = +(+v).toFixed(3); if (el._o !== v) { el._o = v; el.style.opacity = v; } }
+    const ty = (p) => 'translate3d(0,' + (p * 100).toFixed(2) + '%,0)';
+
+    /* ---------- elements ---------- */
+    const $ = (s, c) => (c || document).querySelector(s);
+    const $$ = (s, c) => Array.from((c || document).querySelectorAll(s));
+    const header = $('header');
+    const hero = $('.hero');
+    const kicker = $('.kicker', hero), h1 = $('h1', hero), sub = $('.sub', hero), cta = $('.cta-row', hero), hint = $('.scroll-hint', hero);
+    const proof = $('.proof');
+    const proofItems = $$('.wrap > span', proof);
+    const offersSec = $('#offers');
+    const rowsEl = $$('.offer');
+    const band = $('.band'), bandPin = $('.band-pin'), quote = $('.q', band), sig = $('.sig', band), bandInner = $('.inner', band);
+    const ringset = $('.ringset', band);
+    const ringEls = $$('ellipse', band);
+    const methodSec = $('#method'), mrow = $('.row', methodSec), mItems = $$('.m', methodSec);
+    const finalSec = $('.final');
+    const footer = $('footer'), wordmark = $('.wordmark', footer);
+
+    /* ---------- split text into words (motion only; copy is untouched) ---------- */
+    function split(el, mask) {
+      const out = [];
+      el.classList.add('split');
+      (function walk(node, grad) {
+        Array.from(node.childNodes).forEach((ch) => {
+          if (ch.nodeType === 3) {
+            const frag = document.createDocumentFragment();
+            ch.textContent.split(/([ \t\r\n]+)/).forEach((part) => {
+              if (!part) return;
+              if (/^[ \t\r\n]+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              const subs = part.split('\u00A0');
+              const host = subs.length > 1 ? document.createElement('span') : frag;
+              if (subs.length > 1) host.className = 'nw';
+              subs.forEach((sw, i) => {
+                if (i) host.appendChild(document.createTextNode('\u00A0'));
+                if (!sw) return;
+                const wi = document.createElement('span');
+                wi.className = 'wi' + (grad ? ' grad' : '');
+                wi.textContent = sw;
+                if (mask) { const w = document.createElement('span'); w.className = 'w'; w.appendChild(wi); host.appendChild(w); }
+                else host.appendChild(wi);
+                out.push(wi);
+              });
+              if (host !== frag) frag.appendChild(host);
+            });
+            node.replaceChild(frag, ch);
+          } else if (ch.nodeType === 1) {
+            walk(ch, grad || ch.tagName === 'EM' || ch.tagName === 'B');
+          }
+        });
+      })(el, false);
+      return out;
+    }
+
+    const heroW = FX ? split(h1, true).map((el) => ({ el })) : [];
+    const heads = [offersSec, methodSec, finalSec].map((sec) => {
+      const h2 = $('h2', sec), eb = $('.eyebrow', sec);
+      let ebi = null;
+      if (FX && eb) { ebi = document.createElement('span'); ebi.className = 'ebi'; ebi.textContent = eb.textContent; eb.textContent = ''; eb.appendChild(ebi); }
+      return { h2, eb: ebi, words: FX ? split(h2, true) : [], top: 0, trig: null };
+    });
+    const qWords = FX ? split(quote, false) : [];
+
+    /* proof strip hairlines */
+    const plT = document.createElement('i'); plT.className = 'pl t';
+    const plB = document.createElement('i'); plB.className = 'pl b';
+    proof.appendChild(plT); proof.appendChild(plB);
+
+    /* offer rows: a drawn hairline + a reading light */
+    const rows = rowsEl.map((el, i) => {
+      const rule = document.createElement('i'); rule.className = 'rule';
+      const wash = document.createElement('i'); wash.className = 'wash';
+      const bar = document.createElement('i'); bar.className = 'bar';
+      el.insertBefore(bar, el.firstChild); el.insertBefore(wash, el.firstChild); el.insertBefore(rule, el.firstChild);
+      let ruleB = null;
+      if (i === rowsEl.length - 1) { ruleB = document.createElement('i'); ruleB.className = 'rule b'; el.appendChild(ruleB); }
+      return { el, rule, wash, bar, ruleB };
+    });
+
+    /* method rail */
+    const rail = document.createElement('div'); rail.className = 'rail'; rail.setAttribute('aria-hidden', 'true');
+    const rfill = document.createElement('i'); rfill.className = 'fill';
+    const bead = document.createElement('i'); bead.className = 'bead';
+    rail.appendChild(rfill); rail.appendChild(bead); mrow.insertBefore(rail, mrow.firstChild);
+    const nums = mItems.map((m) => {
+      const el = $('.n', m);
+      let glow = null;
+      if (FX) {
+        el.classList.add('nx');
+        glow = document.createElement('span'); glow.className = 'ng'; glow.setAttribute('aria-hidden', 'true');
+        glow.textContent = el.textContent; el.appendChild(glow);
+      }
+      return { el, glow, trig: null };
+    });
+
+    /* rings */
+    const RING = ringEls.map((el, i) => {
+      const m = /rotate\(([-\d.]+)/.exec(el.getAttribute('transform') || '');
+      return { el, a: m ? +m[1] : 0, i };
+    });
+    const ember = RING[RING.length - 1];
+    ember.el.setAttribute('stroke', 'rgb(255,140,60)');
+
+    /* ---------- the sky: three pre-rendered star layers (moved by the compositor only) + one scene canvas ---------- */
+    /* reduced motion: no live sky — the hero keeps the original static dawn */
+    const sky = FX ? document.createElement('div') : null;
+    const LAYERS = [
+      { tile: 300, n: 46, f: 0.05, drift: 150, r: [0.35, 0.75], a: [0.22, 0.55], glow: 0, seed: 7 },
+      { tile: 380, n: 24, f: 0.11, drift: 100, r: [0.5, 1.0], a: [0.3, 0.72], glow: 0, seed: 19 },
+      { tile: 460, n: 9, f: 0.21, drift: 64, r: [0.8, 1.45], a: [0.5, 0.9], glow: 1, seed: 41 }
+    ];
+    let cv = null, ctx = null;
+    if (sky) {
+      sky.className = 'sky'; sky.setAttribute('aria-hidden', 'true');
+      LAYERS.forEach((L) => { L.el = document.createElement('canvas'); L.el.className = 'stars-l'; sky.appendChild(L.el); });
+      cv = document.createElement('canvas'); sky.appendChild(cv);
+      document.body.insertBefore(sky, document.body.firstChild);
+      ctx = cv.getContext('2d');
+    }
+    const hasConic = !!(ctx && typeof ctx.createConicGradient === 'function');
+
+    function rng(seed) {
+      return function () {
+        seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+        let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+        t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+    function starTile(L, k) {
+      const S = L.tile, c = document.createElement('canvas');
+      c.width = c.height = Math.round(S * k);
+      const g = c.getContext('2d'), R = rng(L.seed);
+      g.scale(k, k);
+      for (let j = 0; j < L.n; j++) {
+        const x = R() * S, y = R() * S, u = R();
+        const r = L.r[0] + (L.r[1] - L.r[0]) * u * u * u;
+        const a = L.a[0] + (L.a[1] - L.a[0]) * R();
+        const col = R() < 0.2 ? '255,200,156' : '242,235,222';
+        for (let dx = -S; dx <= S; dx += S) for (let dy = -S; dy <= S; dy += S) {
+          const X = x + dx, Y = y + dy;
+          if (X < -10 || X > S + 10 || Y < -10 || Y > S + 10) continue;
+          if (L.glow) {
+            const gg = g.createRadialGradient(X, Y, 0, X, Y, r * 5);
+            gg.addColorStop(0, 'rgba(' + col + ',' + (a * 0.22).toFixed(3) + ')');
+            gg.addColorStop(1, 'rgba(' + col + ',0)');
+            g.fillStyle = gg; g.fillRect(X - r * 5, Y - r * 5, r * 10, r * 10);
+          }
+          g.fillStyle = 'rgba(' + col + ',' + a.toFixed(3) + ')';
+          g.beginPath(); g.arc(X, Y, r, 0, Math.PI * 2); g.fill();
+        }
+      }
+      return c;
+    }
+
+    let cw = 0, ch = 0, dpr = 0;
+    function sizeSky() {
+      if (!sky) { cw = vw; ch = vh; return; }
+      const w = sky.clientWidth, h = sky.clientHeight;
+      const big = w * h > 1.0e6;
+      const d = big ? Math.min(window.devicePixelRatio || 1, 1.5) * 0.72 : Math.min(window.devicePixelRatio || 1, 2);
+      if (w === cw && h === ch && d === dpr) return;
+      cw = w; ch = h; dpr = d;
+      cv.width = Math.round(w * d); cv.height = Math.round(h * d);
+      /* star layers: viewport + one tile, 1x backing (soft points, small memory), rasterised once per resize */
+      LAYERS.forEach((L) => {
+        const W2 = w + L.tile, H2 = h + L.tile;
+        L.el.width = W2; L.el.height = H2;
+        L.el.style.width = W2 + 'px'; L.el.style.height = H2 + 'px';
+        const g = L.el.getContext('2d');
+        if (!g) return;
+        g.fillStyle = g.createPattern(starTile(L, 1), 'repeat');
+        g.fillRect(0, 0, W2, H2);
+      });
+    }
+
+    /* ---------- geometry cache (read on load/resize only — never per frame) ---------- */
+    const G = {};
+    let K = [];
+    let vw = 0, vh = 0;
+    const docTop = (el) => el.getBoundingClientRect().top + window.scrollY;
+    function layout() {
+      vw = root.clientWidth; vh = window.innerHeight;
+      sizeSky();
+      G.maxY = Math.max(1, root.scrollHeight - vh);
+      G.sunX = (vw < 700 ? 0.7 : 0.74) * vw;
+      /* hero lines (for the scroll exit) */
+      let lastTop = null;
+      heroW.forEach((w) => {
+        const top = Math.round(w.el.parentNode.getBoundingClientRect().top + window.scrollY);
+        if (lastTop == null || Math.abs(top - lastTop) > 6) lastTop = top;
+        w.e0 = lastTop - vh * 0.22; w.e1 = lastTop - vh * 0.01;
+      });
+      G.proof = { top: docTop(proof), h: proof.offsetHeight };
+      plT.style.setProperty('--sx', G.sunX + 'px');
+      plT.style.transformOrigin = plB.style.transformOrigin = G.sunX + 'px 50%';
+      G.pi = proofItems.map((el) => {
+        const d = el.offsetLeft + el.offsetWidth / 2 - G.sunX;
+        return { dx: -d * 0.32, dl: Math.min(0.42, (Math.abs(d) / vw) * 0.7) };
+      });
+      G.offersTop = docTop(offersSec);
+      G.rows = rowsEl.map((r) => ({ top: docTop(r), h: r.offsetHeight }));
+      heads.forEach((h) => { h.top = docTop(h.h2); });
+      G.heads = heads.map((h) => h.top);
+      G.band = { top: docTop(band), h: band.offsetHeight };
+      /* rings centred under the sun's x */
+      const bw = bandPin.clientWidth, bh = bandPin.clientHeight;
+      const rs = Math.max(bw / 1200, bh / 620);
+      const ringY = vw < 700 ? (bh * 0.34 - bh / 2) / rs : 0;
+      ringset.setAttribute('transform', 'translate(' + ((G.sunX - bw / 2) / rs).toFixed(1) + ' ' + ringY.toFixed(1) + ')');
+      /* method rail */
+      const ns = nums.map((n) => n.el);
+      G.mTop = docTop(methodSec); G.mH = methodSec.offsetHeight;
+      const rowTop = docTop(mrow);
+      if (vw <= 700) {
+        const c0 = ns[0].offsetTop + ns[0].offsetHeight * 0.55, c3 = ns[3].offsetTop + ns[3].offsetHeight * 0.55;
+        rail.className = 'rail v';
+        rail.style.cssText = 'left:4px;top:' + c0 + 'px;width:1px;height:' + (c3 - c0) + 'px';
+        G.rail = { v: true, top: rowTop + c0, len: c3 - c0, at: ns.map((n) => (n.offsetTop + n.offsetHeight * 0.55 - c0) / (c3 - c0)) };
+      } else {
+        const Lw = mrow.clientWidth;
+        rail.className = 'rail h';
+        rail.style.cssText = 'left:0;top:0;height:1px;width:' + Lw + 'px';
+        G.rail = { v: false, top: rowTop, len: Lw, at: mItems.map((m) => m.offsetLeft / Lw) };
+      }
+      G.final = { top: docTop(finalSec), h: finalSec.offsetHeight };
+      G.footer = { top: docTop(footer), h: footer.offsetHeight };
+      gradFix();
+      buildKeys();
+    }
+
+    /* one continuous gradient across a multi-word em ("absurdly fast.") */
+    function gradFix() {
+      $$('.split em, .split b').forEach((g) => {
+        const ws = $$('.grad', g);
+        if (ws.length < 2) return;
+        const gr = g.getBoundingClientRect();
+        ws.forEach((w) => {
+          const r = w.getBoundingClientRect();
+          w.style.backgroundSize = gr.width.toFixed(1) + 'px 100%';
+          w.style.backgroundPosition = (-(r.left - gr.left)).toFixed(1) + 'px 0';
+        });
+      });
+    }
+
+    /* scene keyframes, anchored to where each section actually sits */
+    function buildKeys() {
+      const H = ch || vh, W = cw || vw;
+      const s = Math.max(W, H) / 1000;
+      const base = H - 180 * s;
+      const pin0 = G.band.top, pin1 = G.band.top + G.band.h - vh;
+      const foot = G.footer.top - G.maxY; /* footer top, in viewport px, at max scroll */
+      const zEnd = Math.max(3.3, (W * W) / 4 / 48 / (780 * s)); /* edge sag <= 24px */
+      const sagEnd = 780 * s * zEnd - Math.sqrt(sq(780 * s * zEnd) - sq(W / 2));
+      /* three horizon shots (pre-dawn, crest, sunrise); reading passages keep it at the frame edge */
+      const ys = [
+        0,                                /* hero: pre-dawn limb */
+        Math.min(G.offersTop - 0.12 * vh, 0.5 * vh), /* offers: horizon below frame, warm floor */
+        pin0 - 0.42 * vh,                 /* band approach */
+        pin0 + (pin1 - pin0) * 0.8,       /* held quote: the sun crests */
+        pin1 + 0.3 * vh,                  /* released: camera lifts again */
+        G.mTop + G.mH * 0.5 - 0.5 * vh,   /* method */
+        G.maxY - 0.3 * vh,                /* final approach */
+        G.maxY                            /* sunrise on the footer line */
+      ];
+      const v = [
+        { hy: base, zoom: 1, warm: 0, bloom: 0.62, sunE: -3 },
+        { hy: H + 70 * s, zoom: 1.2, warm: 0.12, bloom: 0.36, sunE: -2.6 },
+        { hy: H + 70 * s, zoom: 1.2, warm: 0.12, bloom: 0.36, sunE: -2.6 }, /* held: reading passage costs no repaint */
+        { hy: H * 0.86, zoom: 1.75, warm: 0.42, bloom: 1, sunE: -0.72 },
+        { hy: H + 75 * s, zoom: 2.1, warm: 0.42, bloom: 0.86, sunE: -0.45 },
+        { hy: H + 75 * s, zoom: 2.1, warm: 0.42, bloom: 0.86, sunE: -0.45 }, /* held */
+        { hy: H + 60 * s, zoom: 2.2 + (zEnd - 2.2) * 0.55, warm: 0.7, bloom: 1.0, sunE: -0.1 },
+        { hy: foot - sagEnd - 4, zoom: zEnd, warm: 1, bloom: 1.15, sunE: 0.45 }
+      ];
+      ys[6] = Math.min(ys[6], G.maxY - 0.3 * vh);
+      for (let i = 1; i < ys.length; i++) ys[i] = Math.max(ys[i], ys[i - 1] + 1);
+      ys[ys.length - 1] = G.maxY;
+      for (let i = ys.length - 2; i >= 0; i--) ys[i] = Math.min(ys[i], ys[i + 1] - 1);
+      K = ys.map((y, i) => Object.assign({ y }, v[i]));
+    }
+
+    /* ---------- scene state = f(t, y) ---------- */
+    const KP = ['hy', 'zoom', 'warm', 'bloom', 'sunE'];
+    function sceneAt(t, y) {
+      let i = 0;
+      while (i < K.length - 2 && y > K[i + 1].y) i++;
+      const a = K[i], b = K[i + 1];
+      const u = smr(cl((y - a.y) / Math.max(1, b.y - a.y)));
+      const S = {};
+      KP.forEach((k) => { S[k] = a[k] + (b[k] - a[k]) * u; });
+      if (!FX) { S.hy = K[0].hy; S.zoom = 1; S.sunE = K[0].sunE; }
+      S.t = FX ? t : 0; S.sy = FX ? y : 0;
+      S.stars = LAYERS.map((L, i) => (FX ? 0.32 + 0.68 * sm(cl((t - i * 0.08) / 0.6)) : 1) * (1 - 0.82 * S.warm));
+      S.tilt = LAYERS.map((L, i) => (FX ? (1 - spring(t - 0.05, 0.62, 0.8)) * (40 + i * 55) : 0));
+      /* the crest: sun's upper limb just clearing the horizon */
+      S.flare = (0.95 * Math.exp(-sq((S.sunE + 0.72) / 0.32)) + 0.32 * sm(cl((S.sunE + 0.4) / 0.8))) * sm(cl(((ch || vh) - S.hy) / ((ch || vh) * 0.08)));
+      if (FX) {
+        /* the planet enters from just below frame; the sun glints on the limb; light runs along it */
+        S.hy += (1 - spring(t, 0.7, 0.8)) * 0.26 * (ch || vh);
+        S.ignPx = t > 4 ? 1e7 : ((cw || vw) * 0.9 + 80) * spring(t - 0.2, 0.7, 0.95);
+        S.haloI = sm(cl((t - 0.28) / 0.8));
+        S.bloom *= sm(cl((t - 0.06) / 0.3)) * (1 + 1.2 * Math.exp(-sq((t - 0.3) / 0.22)));
+        S.flare = Math.max(S.flare, 0.9 * Math.exp(-sq((t - 0.3) / 0.16)));
+      } else { S.ignPx = 1e7; S.haloI = 1; }
+      return S;
+    }
+
+    /* ---------- the painter ---------- */
+    const COL = {
+      gold: [255, 215, 160], orange: [255, 160, 80], e1: [255, 122, 42], e2: [255, 100, 32], e3: [245, 90, 24], e4: [224, 80, 16], e5: [208, 72, 8],
+      goldW: [255, 230, 194], orangeW: [255, 188, 114], e1W: [255, 154, 74], e2W: [255, 134, 58], e3W: [250, 118, 46], e4W: [238, 102, 34], e5W: [220, 88, 24]
+    };
+    const HALO = [[-2.5, 'gold', 0.9], [17.5, 'orange', 0.55], [45, 'e1', 0.34], [95, 'e2', 0.22], [170, 'e3', 0.13], [270, 'e4', 0.06], [382, 'e5', 0.02]];
+
+    function drawScene(S) {
+      if (!ctx) return;
+      const W = cw, H = ch;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+      ctx.globalAlpha = 1;
+      ctx.clearRect(0, 0, W, H);
+      const s = Math.max(W, H) / 1000;
+      const R = 780 * s * S.zoom;
+      const cx = W / 2, cy = S.hy + R;
+      const sinp = clamp((G.sunX - cx) / R, -0.95, 0.95);
+      const phi = Math.asin(sinp), cosp = Math.cos(phi);
+      const lx = cx + R * sinp, ly = cy - R * cosp;
+      const th = Math.min(1.6, Math.sqrt(S.zoom));
+      const gnd = cl((S.zoom - 1) / 2.5); /* 0 in orbit, 1 at ground level */
+      const sH = s * (1 - gnd) + (H / 1000) * gnd; /* at ground the atmosphere scales with frame height */
+      const w = S.warm;
+      const rs = 15 * s;
+
+      /* 1 — sky warms around the sunrise point */
+      if (w > 0.002) {
+        const r0 = Math.max(W, H) * 0.85 * (1 - 0.3 * gnd);
+        const g = ctx.createRadialGradient(lx, ly, 0, lx, ly, r0);
+        g.addColorStop(0, rgba([255, 140, 62], 0.34 * w));
+        g.addColorStop(0.15, rgba([236, 98, 34], 0.19 * w));
+        g.addColorStop(0.4, rgba([160, 56, 18], 0.07 * w));
+        g.addColorStop(1, rgba([110, 36, 10], 0));
+        ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+      }
+      /* 2 — atmosphere halo (the original dawn gradient, now live) */
+      const I = S.haloI * (1 + 0.25 * w);
+      if (I > 0.002) {
+        const tail = (1 + 0.3 * (th - 1)) * (1 - 0.45 * gnd); /* orbit: long tail; ground: short */
+        const dist = (d) => (d <= 0 ? s * d : sH * (d <= 60 ? d * th : 60 * th + (d - 60) * tail)); /* monotonic stop map */
+        const T = dist(470);
+        const inner = Math.max(1, R - 30 * s), outer = R + T, span = outer - inner;
+        const g = ctx.createRadialGradient(cx, cy, inner, cx, cy, outer);
+        g.addColorStop(0, rgba(COL.gold, 0));
+        HALO.forEach(([d, key, a]) => {
+          const dd = dist(d);
+          g.addColorStop(cl((R + dd - inner) / span), rgba(mixc(COL[key], COL[key + 'W'], w), a * I * (d > 40 ? 1 + 0.3 * w : 1)));
+        });
+        g.addColorStop(1, rgba(COL.e5, 0));
+        ctx.fillStyle = g;
+        const y0 = Math.max(0, S.hy - T);
+        if (y0 < H) ctx.fillRect(0, y0, W, H - y0);
+      }
+      /* 3 — sun bloom + disc, additive, before the planet so the limb occludes them */
+      ctx.globalCompositeOperation = 'lighter';
+      const B = S.bloom;
+      if (B > 0.002) {
+        let br = (240 + 220 * w) * s * th;
+        ctx.save(); ctx.translate(lx, ly); ctx.rotate(phi); ctx.scale(1, 0.34);
+        let g = ctx.createRadialGradient(0, 0, 0, 0, 0, br);
+        g.addColorStop(0, rgba([255, 222, 178], 0.62 * B));
+        g.addColorStop(0.1, rgba([255, 176, 98], 0.36 * B));
+        g.addColorStop(0.36, rgba([255, 112, 44], 0.13 * B));
+        g.addColorStop(1, rgba([255, 92, 28], 0));
+        ctx.fillStyle = g; ctx.fillRect(-br, -br, br * 2, br * 2);
+        ctx.restore();
+        br = (170 + 300 * w) * s;
+        g = ctx.createRadialGradient(lx, ly, 0, lx, ly, br);
+        g.addColorStop(0, rgba([255, 176, 96], 0.24 * B));
+        g.addColorStop(0.4, rgba([255, 120, 48], 0.07 * B));
+        g.addColorStop(1, rgba([255, 92, 28], 0));
+        ctx.fillStyle = g; ctx.fillRect(lx - br, ly - br, br * 2, br * 2);
+      }
+      if (S.sunE > -1.8) {
+        const dc = R + S.sunE * rs;
+        const sx = cx + dc * sinp, sy = cy - dc * cosp, rr = rs * 2.4;
+        const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, rr);
+        g.addColorStop(0, 'rgba(255,250,238,1)');
+        g.addColorStop(0.36, 'rgba(255,240,212,.96)');
+        g.addColorStop(0.42, 'rgba(255,196,120,.5)');
+        g.addColorStop(0.7, 'rgba(255,140,60,.12)');
+        g.addColorStop(1, 'rgba(255,120,40,0)');
+        ctx.fillStyle = g; ctx.fillRect(sx - rr, sy - rr, rr * 2, rr * 2);
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      /* 4 — rim glow (under the planet, like the original blurred stroke), then the planet */
+      const ign = Math.min(9, S.ignPx / R);
+      const edge = Math.min(0.5, (70 * s) / R);
+      const dMax = Math.min(Math.PI, Math.asin(Math.min(1, (W * 0.5 + Math.abs(G.sunX - cx) + 40) / R)) + 0.12);
+      const sig = (230 * s) / R;
+      const reveal = (d) => (ign >= 3.1 ? 1 : 1 - sm(cl((d - (ign - edge)) / edge)));
+      const hot = (d) => Math.exp(-(d * d) / (sig * sig));
+      const glowCol = mixc(COL.orange, COL.orangeW, w);
+      const coreCol = mixc(COL.gold, [255, 244, 226], 0.5 * w);
+      const conic = (col, fa) => {
+        const g = ctx.createConicGradient(phi - 1.5 * Math.PI, cx, cy);
+        const N = 36, tail = fa(Math.PI);
+        g.addColorStop(0, rgba(col, tail));
+        for (let j = N; j >= 1; j--) { const d = (dMax * j) / N; g.addColorStop(0.5 - d / (2 * Math.PI), rgba(col, fa(d))); }
+        for (let j = 0; j <= N; j++) { const d = (dMax * j) / N; g.addColorStop(0.5 + d / (2 * Math.PI), rgba(col, fa(d))); }
+        g.addColorStop(1, rgba(col, tail));
+        return g;
+      };
+      const a0 = phi - Math.PI / 2;
+      const igniting = ign < 3.1;
+      const span = igniting ? Math.min(ign, dMax) : dMax; /* only the arc that can be on screen */
+      ctx.beginPath();
+      ctx.arc(cx, cy, R, a0 - Math.min(Math.PI, span + 0.05), a0 + Math.min(Math.PI, span + 0.05));
+      ctx.strokeStyle = igniting && hasConic ? conic(glowCol, (d) => reveal(d) * (0.5 + 0.5 * hot(d))) : rgba(glowCol, 0.62);
+      [[34, 0.12], [16, 0.24]].forEach(([lw, a]) => { ctx.globalAlpha = a; ctx.lineWidth = lw * s * th; ctx.stroke(); });
+      ctx.globalAlpha = 1;
+      const rimPath = new Path2D(); rimPath.arc(cx, cy, R, a0 - Math.min(Math.PI, span + 0.05), a0 + Math.min(Math.PI, span + 0.05));
+      /* the planet */
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2);
+      ctx.fillStyle = '#0a0807'; ctx.fill();
+      if (w > 0.01) { /* ground catching the first light */
+        ctx.save(); ctx.clip();
+        ctx.translate(lx, ly); ctx.rotate(phi); ctx.scale(1, 0.28);
+        const gr = 300 * s * th;
+        const g = ctx.createRadialGradient(0, 0, 0, 0, 0, gr);
+        g.addColorStop(0, rgba([255, 150, 70], 0.16 * w * B));
+        g.addColorStop(1, rgba([255, 120, 50], 0));
+        ctx.fillStyle = g; ctx.fillRect(-gr, -gr, gr * 2, gr * 2);
+        ctx.restore();
+      }
+      /* 5 — the rim line, drawn over the planet edge: ignites from the sun point outward */
+      ctx.strokeStyle = igniting && hasConic ? conic(coreCol, (d) => reveal(d) * (0.84 + 0.16 * hot(d)) * 0.95) : rgba(coreCol, 0.9);
+      ctx.lineWidth = 1.6; ctx.stroke(rimPath);
+      /* 6 — the crest flare: hot core + anamorphic streak along the limb */
+      const F = S.flare;
+      if (F > 0.003) {
+        ctx.globalCompositeOperation = 'lighter';
+        ctx.save(); ctx.translate(lx, ly); ctx.rotate(phi);
+        const cr = 34 * s;
+        let g = ctx.createRadialGradient(0, 0, 0, 0, 0, cr);
+        g.addColorStop(0, rgba([255, 250, 236], 0.95 * F));
+        g.addColorStop(0.25, rgba([255, 214, 150], 0.5 * F));
+        g.addColorStop(1, rgba([255, 140, 60], 0));
+        ctx.fillStyle = g; ctx.fillRect(-cr, -cr, cr * 2, cr * 2);
+        const L = Math.min(W * 0.55, 560 * s);
+        ctx.rotate(-phi); /* the streak belongs to the lens, so it stays horizontal */
+        [[2.2, 0.9], [12, 0.2]].forEach(([thick, a]) => {
+          ctx.save(); ctx.scale(1, thick / L);
+          g = ctx.createRadialGradient(0, 0, 0, 0, 0, L);
+          g.addColorStop(0, rgba([255, 236, 206], a * F));
+          g.addColorStop(0.25, rgba([255, 186, 110], a * 0.45 * F));
+          g.addColorStop(1, rgba([255, 140, 60], 0));
+          ctx.fillStyle = g; ctx.fillRect(-L, -L, 2 * L, 2 * L);
+          ctx.restore();
+        });
+        ctx.restore();
+        ctx.globalCompositeOperation = 'source-over';
+      }
+    }
+
+    /* star layers: depth parallax with scroll + slow drift with time — transforms only */
+    function placeStars(S) {
+      LAYERS.forEach((L, i) => {
+        const ox = -((S.t * L.tile) / L.drift) % L.tile;
+        const oy = -((((S.sy * L.f - S.tilt[i]) % L.tile) + L.tile) % L.tile);
+        setT(L.el, 'translate3d(' + ox.toFixed(2) + 'px,' + oy.toFixed(2) + 'px,0)');
+        setO(L.el, S.stars[i]);
+      });
+    }
+
+    /* ---------- DOM choreography = f(t, y) ---------- */
+    function renderDOM(t, y) {
+      const H = vh;
+      let busy = false;
+      if (FX) {
+        /* hero load: header, kicker slide, words rise from masks, then sub + CTA (on the type clock) */
+        const t0 = t;
+        t = textAt == null ? -10 : t - textAt;
+        setO(header, sm(cl((t - 0.04) / 0.45)));
+        const kp = spring(t - 0.22, 1.1, 0.8);
+        setT(kicker, 'translate3d(' + ((1 - kp) * -18).toFixed(2) + 'px,0,0)');
+        setO(kicker, sm(cl((t - 0.22) / 0.35)));
+        heroW.forEach((w, i) => {
+          const p = 1.3 * (1 - spring(t - (0.3 + i * 0.075), 1.25, 0.74));
+          const e = sm(cl((y - w.e0) / (w.e1 - w.e0)));
+          setT(w.el, ty(p + 1.3 * e));
+        });
+        const sp = spring(t - 0.72, 1.0, 0.82);
+        setT(sub, 'translate3d(0,' + ((1 - sp) * 18).toFixed(2) + 'px,0)');
+        setO(sub, sm(cl((t - 0.72) / 0.45)));
+        const cp = spring(t - 0.86, 1.0, 0.82);
+        setT(cta, 'translate3d(0,' + ((1 - cp) * 18).toFixed(2) + 'px,0)');
+        setO(cta, sm(cl((t - 0.86) / 0.45)));
+        setO(hint, sm(cl((t - 1.3) / 0.6)) * (1 - sm(cl(y / (H * 0.15)))));
+        if (t < 3.2) busy = true;
+        t = t0;
+      }
+      /* proof strip: the hairline draws outward from the sun's x, items spread from it */
+      {
+        const top = G.proof.top - y;
+        const p = FX ? cl((H * 0.97 - top) / (H * 0.34)) : 1;
+        setT(plT, 'scaleX(' + sm(p).toFixed(4) + ')');
+        setT(plB, 'scaleX(' + sm(cl(p * 1.25 - 0.25)).toFixed(4) + ')');
+        proofItems.forEach((el, i) => {
+          const d = G.pi[i];
+          const q = sm(cl((p - d.dl) / (1 - d.dl)));
+          setT(el, 'translate3d(' + ((1 - q) * d.dx).toFixed(2) + 'px,0,0)');
+          setO(el, 0.12 + 0.88 * q);
+        });
+      }
+      /* offers: rules draw as rows arrive; a reading light follows the row you are on */
+      rows.forEach((r, i) => {
+        const g = G.rows[i], top = g.top - y;
+        const p = FX ? sm(cl((H * 0.97 - top) / (H * 0.28))) : 1;
+        setT(r.rule, 'scaleX(' + p.toFixed(4) + ')');
+        if (r.ruleB) setT(r.ruleB, 'scaleX(' + (FX ? sm(cl((H * 0.97 - top - g.h) / (H * 0.28))) : 1).toFixed(4) + ')');
+        const c = top + g.h * 0.5;
+        const L = FX ? Math.exp(-sq((c - H * 0.46) / (H * 0.115))) : 0;
+        setO(r.wash, 0.95 * L);
+        setO(r.bar, Math.pow(L, 2.5));
+      });
+      /* section headlines: words rise from masks once they cross 86% of the screen */
+      heads.forEach((h) => {
+        if (!FX) return;
+        if (h.trig == null && h.top - y < H * 0.86) h.trig = t;
+        const tt = h.trig == null ? -10 : t - h.trig;
+        if (h.eb) setT(h.eb, 'translate3d(' + ((1 - spring(tt, 1.1, 0.85)) * -104).toFixed(2) + '%,0,0)');
+        const ex = 1.3 * sm(cl((y - (h.top - H * 0.17)) / (H * 0.15)));
+        h.words.forEach((w, i) => setT(w, ty(1.3 * (1 - spring(tt - 0.1 - i * 0.085, 1.2, 0.74)) + ex)));
+        if (h.eb) setO(h.eb, 1 - sm(cl((y - (h.top - H * 0.24)) / (H * 0.12))));
+        if (h.trig != null && tt < 2.6) busy = true;
+      });
+      /* band: held shot — rings collapse to one centre, the line lights word by word */
+      {
+        const pin0 = G.band.top, pin1 = G.band.top + G.band.h - H;
+        const q0 = pin0 - H * 0.5, q1 = pin0;
+        const q = FX ? cl((y - q0) / Math.max(1, q1 - q0)) : 1;
+        const rq = FX ? cl((y - q0) / Math.max(1, pin0 + (pin1 - pin0) * 0.85 - q0)) : 1; /* rings + ember run the whole hold */
+        const leave = FX ? cl((y - pin1) / (H * 0.5)) : 0;
+        const n = qWords.length;
+        qWords.forEach((w, i) => { const f = w.classList.contains('grad') ? 0.62 : 0.5; setO(w, f + (1 - f) * sm(cl(q * (n + 1.5) - i))); });
+        const N = RING.length, open = 1 - sm(rq);
+        RING.forEach((r) => {
+          const k = 1 - r.i / (N - 1);
+          const sc = 1 + open * (0.55 * k + 0.08) - leave * 0.18 * k;
+          const rot = r.a + open * (10 + 22 * (1 - k)) - leave * (8 + 16 * (1 - k));
+          const tr = 'translate(600 310) rotate(' + rot.toFixed(2) + ') scale(' + sc.toFixed(4) + ') translate(-600 -310)';
+          if (r._t !== tr) { r._t = tr; r.el.setAttribute('transform', tr); }
+        });
+        const eo = (0.22 + 0.63 * sm(cl((rq - 0.7) / 0.3))).toFixed(3);
+        if (ember._so !== eo) { ember._so = eo; ember.el.setAttribute('stroke-opacity', eo); }
+        setO(ringset, FX ? (0.3 + 0.7 * sm(cl(rq * 1.4))) * (1 - 0.6 * leave) : 1);
+        if (FX) setO(bandInner, 1 - sm(cl((y - pin1 - H * 0.08) / (H * 0.4)))); /* the held shot dissolves as the camera lifts */
+      }
+      /* method: a small sun travels the rail; each numeral ignites as it is reached */
+      {
+        const R = G.rail;
+        let p;
+        if (!FX) p = 1;
+        else if (R.v) p = cl((H * 0.6 - (R.top - y)) / R.len);
+        else p = cl((H * 0.84 - (R.top - y)) / (H * 0.42));
+        setT(rfill, R.v ? 'scaleY(' + p.toFixed(4) + ')' : 'scaleX(' + p.toFixed(4) + ')');
+        setT(bead, R.v ? 'translate3d(0,' + (p * R.len).toFixed(1) + 'px,0)' : 'translate3d(' + (p * R.len).toFixed(1) + 'px,0,0)');
+        setO(bead, FX ? sm(cl(p / 0.04)) : 0);
+        nums.forEach((nm, k) => {
+          if (!FX) return;
+          const on = p >= R.at[k] - 0.002;
+          if (on && nm.trig == null) nm.trig = t;
+          if (!on) nm.trig = null;
+          const tt = nm.trig == null ? -1 : t - nm.trig;
+          const pop = nm.trig == null ? 0 : spring(tt, 2.0, 0.6);
+          setO(nm.glow, sm(cl(tt / 0.22)));
+          setT(nm.el, 'scale(' + (0.88 + 0.12 * pop).toFixed(4) + ')');
+          if (nm.trig != null && tt < 1.6) busy = true;
+        });
+      }
+      /* footer: the wordmark rises from the ground like the sun */
+      {
+        const p = FX ? cl((y - (G.maxY - H * 0.5)) / (H * 0.5)) : 1;
+        setT(wordmark, 'translate3d(0,' + (14 + (1 - smr(p)) * 62).toFixed(2) + '%,0)');
+      }
+      return busy;
+    }
+
+    /* ---------- frame loop: wakes on scroll / load / active springs, sleeps otherwise ---------- */
+    let raf = 0, idleT = 0, lastY = -1, lastDraw = -1, dirty = true, lastSig = '';
+    /* repaint the canvas only when the scene changed by a visible amount */
+    const sigOf = (S) => [Math.round(S.hy * 2), Math.round(S.zoom * 500), Math.round(S.warm * 250), Math.round(S.bloom * 250),
+      Math.round(S.sunE * 100), Math.round(Math.min(S.ignPx, 1e5) / 2), Math.round(S.haloI * 250), Math.round(S.flare * 250)].join(',');
+    function frame() {
+      raf = 0;
+      const t = clock(), y = window.scrollY;
+      const loading = FX && t < 2.8;
+      /* scroll and load redraw every frame; at rest the stars drift at ~20 fps */
+      if (!sky) { /* reduced motion: nothing in the sky moves */ }
+      else if (loading || dirty || y !== lastY) {
+        const S = sceneAt(t, y), sig = sigOf(S);
+        if (dirty || sig !== lastSig) { drawScene(S); lastSig = sig; }
+        placeStars(S);
+        lastDraw = t; dirty = false;
+      } else if (FX && t - lastDraw >= 0.048) { /* at rest only the stars drift (~20 fps, compositor only) */
+        placeStars(sceneAt(t, y));
+        lastDraw = t;
+      }
+      const busy = renderDOM(t, y);
+      lastY = y;
+      if (loading || busy) request();
+      else if (FX && !SEEK && !document.hidden && !idleT) idleT = setTimeout(() => { idleT = 0; request(); }, 50);
+    }
+    function request() {
+      if (idleT) { clearTimeout(idleT); idleT = 0; }
+      if (!raf && !SEEK && !document.hidden) raf = requestAnimationFrame(frame);
+    }
+
+    layout();
+    root.classList.add('ready');
+    if (SEEK) {
+      document.getAnimations().forEach((a) => a.pause());
+      window.__layout = () => { layout(); dirty = true; return { G, K, cw, ch, dpr }; };
+      window.__seek = (t, y) => {
+        vt = t;
+        if (y != null) window.scrollTo({ top: y, left: 0, behavior: 'instant' });
+        document.getAnimations().forEach((a) => { a.pause(); a.currentTime = t * 1000; });
+        dirty = true; frame();
+        return { y: window.scrollY, maxY: G.maxY };
+      };
+    } else {
+      frame();
+    }
+    window.__dawnReady = Promise.resolve(true);
+
+    addEventListener('scroll', request, { passive: true });
+    let rz = 0;
+    addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { layout(); dirty = true; request(); }, 90); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { layout(); dirty = true; request(); });
+    if (window.ResizeObserver) {
+      let lastH = 0;
+      new ResizeObserver(() => { const h = document.body.scrollHeight; if (h !== lastH) { lastH = h; layout(); dirty = true; request(); } }).observe(document.body);
+    }
+    /* hidden tab: rAF and the idle timer both stop (request() checks document.hidden); resume on return */
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { dirty = true; request(); } });
+  }
+})();
+</script>
 </body>
 </html>
